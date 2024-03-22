@@ -1,4 +1,4 @@
-# CcTv
+# CcTv:Carbon-consumption-Trace-Visualize
 <h2>주제 2번: 분산 클라우드에서 AI 워크로드의 탄소 인지형 이동 및 추적 시스템 개발</h2>
 <h2>예상 성과</h2>
 소프트웨어: 클라우드 환경에서 AI학습 중 발생하는 탄소배출량 시각화 및 탄소 추적<br>
