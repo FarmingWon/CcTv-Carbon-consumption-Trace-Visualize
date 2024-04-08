@@ -1,2 +1,0 @@
-LOSS History : {'train': [], 'val': []}
-metric History : {'train': [], 'val': []}
