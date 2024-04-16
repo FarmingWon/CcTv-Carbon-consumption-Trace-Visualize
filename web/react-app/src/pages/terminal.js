@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 
-const TerminalComponent = () => {
+const Terminal = () => {
   const [input, setInput] = useState('');
   const [output, setOutput] = useState('');
 
@@ -12,8 +11,20 @@ const TerminalComponent = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('/execute', { command: input });
-      setOutput(response.data.output);
+      const response = await fetch('http://localhost:5000/execute', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ command: input })
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      const data = await response.json();
+      setOutput(data.output);
     } catch (error) {
       console.error('Error:', error);
       setOutput('Error occurred while executing command.');
@@ -33,11 +44,11 @@ const TerminalComponent = () => {
             border: '2px solid #ccc',
             borderRadius: '4px',
             marginRight: '10px',
-            backgroundColor: 'black', // 검은색 배경
-            color: 'white', // 흰색 글씨
-            width: '500px', // 가로 크기 조절
-            height: '40px', // 세로 크기 조절
-            textAlign: 'top' // 위에서부터 텍스트 정렬
+            backgroundColor: 'black',
+            color: 'white',
+            width: '500px',
+            height: '40px',
+            textAlign: 'top'
           }}
         />
         <button
@@ -60,6 +71,4 @@ const TerminalComponent = () => {
   );
 };
 
-export default TerminalComponent;
-
-// 터미널 컴포넌트
+export default Terminal;
