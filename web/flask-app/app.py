@@ -17,7 +17,6 @@ def execute_command():
             result = subprocess.check_output(command, shell=True, stderr=subprocess.STDOUT, text=True)
         
         return jsonify({'output': result.strip()})
-    
     except subprocess.CalledProcessError as e:
         # 명령 실행 중 에러 발생 시
         return jsonify({'output': e.output.strip()})
@@ -27,6 +26,3 @@ def execute_command():
 
 if __name__ == '__main__':
     app.run(debug=True)
-
-# 명령어 필요합니뎅. 
-# source venv/bin/activate 
