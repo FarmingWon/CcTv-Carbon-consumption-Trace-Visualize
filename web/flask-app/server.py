@@ -45,29 +45,29 @@
 #     app.run(debug=True, port=5000)
 
 
-from flask import Flask, request, jsonify
-from flask_cors import CORS
-import subprocess
+# from flask import Flask, request, jsonify
+# from flask_cors import CORS
+# import subprocess
 
-app = Flask(__name__)
-CORS(app)
+# app = Flask(__name__)
+# CORS(app)
 
-@app.route('/execute', methods=['POST'])
-def execute_command():
-    data = request.json
-    command = data.get('command')
+# @app.route('/execute', methods=['POST'])
+# def execute_command():
+#     data = request.json
+#     command = data.get('command')
     
-    try:
-        if command == 'python Hello.py':
-            result = subprocess.check_output(['python', 'Hello.py'], stderr=subprocess.STDOUT, text=True)
-        else:
-            result = subprocess.check_output(command, shell=True, stderr=subprocess.STDOUT, text=True)
+#     try:
+#         if command == 'python Hello.py':
+#             result = subprocess.check_output(['python', 'Hello.py'], stderr=subprocess.STDOUT, text=True)
+#         else:
+#             result = subprocess.check_output(command, shell=True, stderr=subprocess.STDOUT, text=True)
         
-        return jsonify({'output': result.strip()})
-    except subprocess.CalledProcessError as e:
-        return jsonify({'output': e.output.strip()})
-    except Exception as e:
-        return jsonify({'output': str(e)})
+#         return jsonify({'output': result.strip()})
+#     except subprocess.CalledProcessError as e:
+#         return jsonify({'output': e.output.strip()})
+#     except Exception as e:
+#         return jsonify({'output': str(e)})
 
-if __name__ == '__main__':
-    app.run(debug=True)
+# if __name__ == '__main__':
+#     app.run(debug=True)
