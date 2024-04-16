@@ -22,6 +22,7 @@ const ExecuteCommand = () => {
         body: JSON.stringify({ command: input })
       });
 
+      //요청 실패시
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
