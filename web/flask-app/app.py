@@ -28,5 +28,5 @@ def execute_command():
 if __name__ == '__main__':
     app.run(debug=True)
 
-# 명령어 필요합니뎅. 
+# 명령어 필요합니뎅. # mac
 # source venv/bin/activate 
