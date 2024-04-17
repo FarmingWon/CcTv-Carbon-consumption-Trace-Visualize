@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import './Train.css';
 
 const Train = () => {
   const [resource, setResource] = useState({
@@ -8,7 +9,6 @@ const Train = () => {
     gpu: 0,
     epoch: 0
   });
-  const [inputCommand, setInputCommand] = useState('');
 
   useEffect(() => {
     const fetchData = async () => {
@@ -25,77 +25,97 @@ const Train = () => {
     };
 
     fetchData();
-
-    const intervalId = setInterval(fetchData, 1000);
-
-    return () => clearInterval(intervalId);
   }, []);
 
-  const handleInputChange = (e) => {
-    setInputCommand(e.target.value);
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      const response = await fetch('/train', {
-        method: 'GET'
-      });
-
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-
-      const data = await response.json();
-      if (data.train) {
-        console.log('Training started');
-      }
-    } catch (error) {
-      console.error('Error starting training:', error);
-    }
-  };
-
   return (
-    <div>
-      <h1>Train 화면입니다</h1>
+    <div className="container">
+      <h1>CcTv-Carbon-consumption-Trace-Visualize</h1>
+      <p></p>
       <div>
-        <p>CPU 사용량: {resource.cpu}</p>
-        <p>메모리 사용량: {resource.memory} MB</p>
-        <p>전체 메모리: {resource.total_memory} MB</p>
-        <p>GPU 사용량: {resource.gpu}</p>
-        <p>Epoch: {resource.epoch}</p>
+        <div class="label1">클라우드 정보 : </div>
+        <div class="label1">지역 : </div>
+        <div class="label1">현재 탄소 밀집도 : </div>
       </div>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          value={inputCommand}
-          onChange={handleInputChange}
-          placeholder="명령어를 입력하세요 (예: python train.py)"
-          style={{
-            padding: '10px',
-            fontSize: '16px',
-            border: '2px solid #ccc',
-            borderRadius: '4px',
-            marginRight: '10px',
-            backgroundColor: 'black',
-            color: 'white',
-            width: '500px',
-            height: '40px'
-          }}
-        />
-        <button
-          type="submit"
-          style={{
-            backgroundColor: 'white',
-            color: 'black',
-            border: 'none',
-            padding: '10px 20px',
-            borderRadius: '4px'
-          }}
-        >
-          실행
-        </button>
-      </form>
+      <p></p>
+      <div className="resource-container">
+        {/* cpu사용량 */}
+        <div className="circular-progress">
+          <svg width="200" height="200">
+            <circle className="background-circle" cx="100" cy="100" r="89" />
+            <circle
+              className="stroke"
+              cx="100"
+              cy="100"
+              r="89"
+              style={{
+                strokeDasharray: `${2 * Math.PI * 89 * (resource.cpu / 100)} ${2 * Math.PI * 89}`
+              }}
+            />
+          </svg>
+          <div className="inner1">
+            <span className="shame">CPU {resource.cpu}%</span>
+          </div>
+        </div>
+
+        {/* total memory */}
+        <div className="circular-progress">
+          <svg width="200" height="200">
+            <circle className="background-circle" cx="100" cy="100" r="89" />
+            <circle
+              className="stroke"
+              cx="100"
+              cy="100"
+              r="89"
+              style={{
+                strokeDasharray: `${2 * Math.PI * 89 * (resource.memory / resource.total_memory)} ${
+                  2 * Math.PI * 89
+                }`
+              }}
+            />
+          </svg>
+          <div className="inner2">
+            <span className="shame">MEMORY {resource.memory} MB</span>
+          </div>
+        </div>
+
+        {/* gpu */}
+        <div className="circular-progress">
+          <svg width="200" height="200">
+            <circle className="background-circle" cx="100" cy="100" r="89" />
+            <circle
+              className="stroke"
+              cx="100"
+              cy="100"
+              r="89"
+              style={{
+                strokeDasharray: `${2 * Math.PI * 89 * (resource.gpu / 100)} ${2 * Math.PI * 89}`
+              }}
+            />
+          </svg>
+          <div className="inner3">
+            <span className="shame">GPU {resource.gpu}%</span>
+          </div>
+        </div>
+
+        {/* epoch */}
+        <div className="circular-progress">
+          <svg width="200" height="200">
+            <circle className="background-circle" cx="100" cy="100" r="89" />
+            <circle
+              className="stroke"
+              cx="100"
+              cy="100"
+              r="89"
+              style={{
+                strokeDasharray: `${2 * Math.PI * 89 * (resource.epoch / 100)} ${2 * Math.PI * 89}`
+              }}
+            />
+          </svg>
+          <div className="inner4">
+            <span className="shame">EPOCH {resource.epoch}/100</span>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

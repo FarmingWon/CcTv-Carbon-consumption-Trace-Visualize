@@ -1,9 +1,14 @@
 from flask import Flask, request, jsonify
 import subprocess
 from flask_cors import CORS
+import sys
+sys.path.append("./")
+# from gpu_utils import GPUs 
 
 app = Flask(__name__)
 CORS(app)
+
+# gpu = GPUs()
 
 @app.route('/users')
 def users():
@@ -60,3 +65,4 @@ if __name__ == '__main__':
 
 # # 명령어 필요합니뎅. # mac
 # # source venv/bin/activate 
+# # .\myenv\Scripts\activate
