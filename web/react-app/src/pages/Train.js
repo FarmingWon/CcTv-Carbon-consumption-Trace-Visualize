@@ -10,6 +10,21 @@ const Train = () => {
     epoch: 0
   });
 
+  const startTraining = async () => {
+    try {
+      const response = await fetch('/train', { method: 'GET' });
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      const data = await response.json();
+      if (data.train) {
+        console.log('Training started successfully');
+      }
+    } catch (error) {
+      console.error('Error starting training:', error);
+    }
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -32,9 +47,9 @@ const Train = () => {
       <h1>CcTv-Carbon-consumption-Trace-Visualize</h1>
       <p></p>
       <div>
-        <div class="label1">클라우드 정보 : </div>
-        <div class="label1">지역 : </div>
-        <div class="label1">현재 탄소 밀집도 : </div>
+        <div className="label1">클라우드 정보 : </div>
+        <div className="label1">지역 : </div>
+        <div className="label1">현재 탄소 밀집도 : </div>
       </div>
       <p></p>
       <div className="resource-container">
@@ -116,6 +131,9 @@ const Train = () => {
           </div>
         </div>
       </div>
+      <button onClick={startTraining} class="startbtn">
+        Train start
+      </button>
     </div>
   );
 };
