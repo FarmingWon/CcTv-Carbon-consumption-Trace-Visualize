@@ -3,12 +3,12 @@ import subprocess
 from flask_cors import CORS
 import sys
 sys.path.append("./")
-# from gpu_utils import GPUs 
+from gpu_utils import GPUs 
 
 app = Flask(__name__)
 CORS(app)
 
-# gpu = GPUs()
+gpu = GPUs()
 
 @app.route('/users')
 def users():
