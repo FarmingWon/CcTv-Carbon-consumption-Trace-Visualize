@@ -8,7 +8,6 @@ import Input from './pages/Input';
 // import Terminal from './pages/Terminal';
 import List from './pages/List';
 import ExecuteCommand from './pages/h_execute';
-import Train from './pages/Train';
 // import Train2 from './pages/train2';
 
 function App() {

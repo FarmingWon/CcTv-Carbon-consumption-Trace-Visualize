@@ -1,8 +1,3 @@
-// 딥러닝 파일 train시키고 시각화하는 컴포넌트
-
-// 딥러닝 파일 실행이나 디렉토리 구조 어떻게 해야할지 잘 몰라서 잘 안되네유.
-//
-
 import React, { useState, useEffect } from 'react';
 
 const Train = () => {
@@ -31,7 +26,7 @@ const Train = () => {
 
     fetchData();
 
-    const intervalId = setInterval(fetchData, 1000); // 1초마다 데이터 받아옴!
+    const intervalId = setInterval(fetchData, 1000);
 
     return () => clearInterval(intervalId);
   }, []);
@@ -48,11 +43,9 @@ const Train = () => {
       });
 
       if (!response.ok) {
-        // 응답오류시
         throw new Error('Network response was not ok');
       }
 
-      //데이터 트레이닝
       const data = await response.json();
       if (data.train) {
         console.log('Training started');
@@ -64,7 +57,7 @@ const Train = () => {
 
   return (
     <div>
-      <h1>Main 화면입니다</h1>
+      <h1>Train 화면입니다</h1>
       <div>
         <p>CPU 사용량: {resource.cpu}</p>
         <p>메모리 사용량: {resource.memory} MB</p>
