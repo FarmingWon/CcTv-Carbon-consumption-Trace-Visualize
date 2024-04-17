@@ -9,6 +9,7 @@ import Input from './pages/Input';
 import List from './pages/List';
 import ExecuteCommand from './pages/h_execute';
 import Train from './pages/Train';
+// import Train2 from './pages/train2';
 
 function App() {
   return (
@@ -18,7 +19,7 @@ function App() {
           <Link to="/">Home</Link> | <Link to="/about">About</Link> |{' '}
           <Link to="/Counter">Counter</Link> | <Link to="/Input">Input</Link> |{' '}
           <Link to="/List">List</Link> | <Link to="/ExecuteCommand">H-execute</Link>|{' '}
-          <Link to="/Train">Train</Link>
+          <Link to="/Train">Train</Link> |
         </nav>
         <Switch>
           <Route path="/" exact component={Home} />
@@ -27,7 +28,7 @@ function App() {
           <Route path="/Input" component={Input} />
           <Route path="/List" component={List} />
           <Route path="/ExecuteCommand" component={ExecuteCommand} />
-          <Route path="/Train" component={Train} />
+          <Route path="/Train" component={Train} />\
         </Switch>
       </div>
     </Router>

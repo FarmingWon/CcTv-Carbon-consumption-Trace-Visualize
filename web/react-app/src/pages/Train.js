@@ -1,5 +1,8 @@
 // 딥러닝 파일 train시키고 시각화하는 컴포넌트
 
+// 딥러닝 파일 실행이나 디렉토리 구조 어떻게 해야할지 잘 몰라서 잘 안되네유.
+//
+
 import React, { useState, useEffect } from 'react';
 
 const Train = () => {
