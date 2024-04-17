@@ -1,0 +1,81 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  /* align-items: center; */
+  margin-left: 1rem;
+  margin-right: 1rem;
+}
+
+.resource-container {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+}
+
+.circular-progress {
+  width: 100px;
+  height: 100px;
+  position: relative;
+}
+
+.inner1 {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(20px, 35px); /* x축으로 40px, y축으로 30px 이동 */
+  z-index: 10;
+  text-anchor: middle;
+  dominant-baseline: middle;
+  white-space: nowrap; /* 텍스트가 한 줄로만 표시되도록 설정 */
+}
+.inner2 {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-10px, 35px); /* x축으로 40px, y축으로 30px 이동 */
+  z-index: 10;
+  text-anchor: middle;
+  dominant-baseline: middle;
+  white-space: nowrap; /* 텍스트가 한 줄로만 표시되도록 설정 */
+}
+.inner3 {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(20px, 35px); /* x축으로 40px, y축으로 30px 이동 */
+  z-index: 10;
+  text-anchor: middle;
+  dominant-baseline: middle;
+  white-space: nowrap; /* 텍스트가 한 줄로만 표시되도록 설정 */
+}
+.inner4 {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(0px, 35px); /* x축으로 40px, y축으로 30px 이동 */
+  z-index: 10;
+  text-anchor: middle;
+  dominant-baseline: middle;
+  white-space: nowrap; /* 텍스트가 한 줄로만 표시되도록 설정 */
+}
+
+.background-circle {
+  fill: transparent;
+  stroke: #e0e0e0; /* 회색 */
+  stroke-width: 20;
+  transform: rotate(-90deg);
+  transform-origin: center;
+}
+
+.stroke {
+  fill: transparent;
+  stroke: #3498db;
+  stroke-width: 20;
+  transform: rotate(-90deg);
+  transform-origin: center;
+}
+
+.label1 {
+  font-size: 17px;
+  font-weight: normal;
+}
