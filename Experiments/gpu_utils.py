@@ -75,8 +75,8 @@ class GPUs:
                 
     # CPU 사용량 모니터링
     def monitor_cpu(self):
-        cpu_percent = psutil.cpu_percent()
-        return cpu_percent
+        cpu_percent = psutil.cpu_percent(percpu=True)
+        return max(cpu_percent)
 
     # 메모리 사용량 모니터링
     def monitor_memory(self):
