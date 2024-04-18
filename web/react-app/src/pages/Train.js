@@ -1,6 +1,86 @@
 import React, { useState, useEffect } from 'react';
 import './Train.css';
 
+const ExecuteCommand = () => {
+  const [input, setInput] = useState('');
+  const [output, setOutput] = useState('');
+  const [error, setError] = useState('');
+
+  const handleInputChange = (e) => {
+    setInput(e.target.value);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      const response = await fetch('/execute', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ command: input })
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      const data = await response.json();
+      setOutput(data.output);
+      setError('');
+    } catch (err) {
+      console.error('Error:', err);
+      setOutput('');
+      setError('Error occurred while executing command.');
+    }
+  };
+
+  // 터미널 컴포넌트 jsx 시작
+  return (
+    <div className="terminal-box">
+      <form onSubmit={handleSubmit}>
+        <input
+          type="text"
+          value={input}
+          onChange={handleInputChange}
+          placeholder="Terminal"
+          required
+          style={{
+            padding: '10px',
+            fontSize: '16px',
+            border: '2px solid #ccc',
+            borderRadius: '4px',
+            marginRight: '10px',
+            backgroundColor: 'black',
+            color: 'white',
+            width: '500px',
+            height: '80px',
+            textAlign: 'left',
+            fontFamily: 'monospace',
+            caretColor: 'white'
+          }}
+        />
+        <button type="submit" style={{ display: 'none' }}>
+          Execute
+        </button>
+      </form>
+      {output && (
+        <div>
+          <h2>Output:</h2>
+          <pre>{output}</pre>
+        </div>
+      )}
+      {error && (
+        <div>
+          <h2>Error:</h2>
+          <pre>{error}</pre>
+        </div>
+      )}
+    </div>
+  );
+};
+
 const Train = () => {
   const [resource, setResource] = useState({
     cpu: 0,
@@ -9,6 +89,9 @@ const Train = () => {
     gpu: 0,
     epoch: 0
   });
+
+  const [inputText, setInputText] = useState('');
+  const [output, setOutput] = useState('');
 
   const startTraining = async () => {
     try {
@@ -22,6 +105,27 @@ const Train = () => {
       }
     } catch (error) {
       console.error('Error starting training:', error);
+    }
+  };
+
+  const handleSubmit = async () => {
+    try {
+      const response = await fetch('/execute', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ command: inputText })
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      const data = await response.json();
+      setOutput(data.output);
+    } catch (error) {
+      console.error('Error executing command:', error);
     }
   };
 
@@ -137,9 +241,14 @@ const Train = () => {
           </div>
         </div>
       </div>
-      <button onClick={startTraining} class="startbtn">
-        Train start
-      </button>
+
+      {/* 결과 출력 */}
+      <div className="output">
+        <pre>{output}</pre>
+      </div>
+
+      {/* ExecuteCommand 터미널 컴포넌트 추가 */}
+      <ExecuteCommand />
     </div>
   );
 };
