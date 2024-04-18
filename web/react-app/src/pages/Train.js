@@ -44,12 +44,18 @@ const Train = () => {
 
   return (
     <div className="container">
-      <h1>CcTv-Carbon-consumption-Trace-Visualize</h1>
+      <div className="head">
+        <img src="./logo.png" alt="Logo" width="100px" height="auto"></img>
+        <h1>CcTv-Carbon-consumption-Trace-Visualize</h1>
+      </div>
       <p></p>
-      <div>
-        <div className="label1">클라우드 정보 : </div>
-        <div className="label1">지역 : </div>
-        <div className="label1">현재 탄소 밀집도 : </div>
+      <div className="info">
+        {/* 클라우드정보 */}
+        <div className="label1">Cloud info : </div>
+        {/* 지역 */}
+        <div className="label1">Region : </div>
+        {/* 현재 탄소 밀집도 */}
+        <div className="label1">Current carbon density : </div>
       </div>
       <p></p>
       <div className="resource-container">

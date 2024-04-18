@@ -19,7 +19,7 @@ function App() {
           <Link to="/">Home</Link> | <Link to="/about">About</Link> |{' '}
           <Link to="/Counter">Counter</Link> | <Link to="/Input">Input</Link> |{' '}
           <Link to="/List">List</Link> | <Link to="/ExecuteCommand">H-execute</Link>|{' '}
-          <Link to="/Train">Train</Link> |
+          <Link to="/Train">Train</Link>
         </nav>
         <Switch>
           <Route path="/" exact component={Home} />
