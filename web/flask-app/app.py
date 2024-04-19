@@ -22,20 +22,16 @@ def users():
 def execute_command():
     data = request.json
     command = data.get('command')
-    
     try:
-        if command == 'use hello':
-            result = subprocess.check_output(['python', 'Hello.py'], stderr=subprocess.STDOUT, text=True)
-        else:
-            result = subprocess.check_output(command, shell=True, stderr=subprocess.STDOUT, text=True)
-        
-        return jsonify({'output': result.strip()})
-    
+        # if len(command)>0 :
+        gpu.learning_start()
+        return jsonify({"output" : True})
     except subprocess.CalledProcessError as e:
         return jsonify({'output': e.output.strip()})
     except Exception as e:
         return jsonify({'output': str(e)})
-      
+    
+    
 #한번만 실행하면 됨
 @app.route('/train', methods=['GET'])
 def start_train():
@@ -62,6 +58,26 @@ def get_resource():
 
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
+    
+# # 이전코드
+# @app.route('/execute', methods=['POST'])
+# def execute_command():
+#     data = request.json
+#     command = data.get('command')
+    
+#     try:
+#         if command == 'use hello':
+#             result = subprocess.check_output(['python', 'Hello.py'], stderr=subprocess.STDOUT, text=True)
+#         else:
+#             result = subprocess.check_output(command, shell=True, stderr=subprocess.STDOUT, text=True)
+        
+#         return jsonify({'output': result.strip()})
+    
+#     except subprocess.CalledProcessError as e:
+#         return jsonify({'output': e.output.strip()})
+#     except Exception as e:
+#         return jsonify({'output': str(e)})
+
 
 # # 명령어 필요합니뎅. # mac
 # # source venv/bin/activate 
