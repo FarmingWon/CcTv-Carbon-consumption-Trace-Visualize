@@ -10,6 +10,7 @@ import List from './pages/List';
 import ExecuteCommand from './pages/h_execute';
 import Train from './pages/Train';
 // import Train2 from './pages/train2';
+import MoveDot from './map';
 
 function App() {
   return (
@@ -18,7 +19,7 @@ function App() {
         <nav>
           <Link to="/">Home</Link> | <Link to="/about">About</Link> |{' '}
           <Link to="/Counter">Counter</Link> | <Link to="/Input">Input</Link> |{' '}
-          <Link to="/List">List</Link> | <Link to="/Train">Train</Link>
+          <Link to="/List">List</Link> | <Link to="/Train">Train</Link> | <Link to="/map">map</Link>
         </nav>
         <Switch>
           <Route path="/" exact component={Home} />
@@ -28,6 +29,7 @@ function App() {
           <Route path="/List" component={List} />
           <Route path="/ExecuteCommand" component={ExecuteCommand} />
           <Route path="/Train" component={Train} />\
+          <Route path="/map" component={MoveDot} />\
         </Switch>
       </div>
     </Router>
