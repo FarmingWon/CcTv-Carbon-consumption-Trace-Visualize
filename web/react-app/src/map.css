@@ -1,0 +1,54 @@
+/* Map.css */
+
+.map-box {
+  width: 1000px; /* 카드의 가로 크기 조정 */
+  height: 600px; /* 카드의 세로 크기 조정 */
+  /* border: 1px solid #ddd;  */
+  border-radius: 11px; /* 카드 모서리를 둥글게 만듦 */
+  box-shadow: 2px 4px 6px rgba(0, 0, 0, 0.1); /* 상하좌우에 그림자를 강조 */
+  overflow: hidden; /* 내부 컨텐츠의 넘치는 부분을 잘라냄 */
+  display: flex; /* 내부 컨텐츠를 가로로 배열하기 위해 Flexbox 사용 */
+  flex-direction: column; /* 내부 컨텐츠를 세로로 배열하기 위해 */
+  position: absolute; /* 절대 위치 지정 */
+  top: 50%; /* 세로 가운데 정렬 */
+  left: 50%; /* 가로 가운데 정렬 */
+  transform: translate(-50%, -50%); /* 요소의 중앙을 화면의 중앙으로 이동 */
+  background-color: white;
+}
+
+.world-map {
+  flex: 1; /* 내부 컨텐츠가 모든 공간을 차지하도록 함 */
+  width: auto; /* 이미지의 너비를 부모 요소에 맞게 자동 조정 */
+  height: auto; /* 이미지의 높이를 부모 요소에 맞게 자동 조정 */
+  max-width: 100%; /* 이미지가 부모 요소를 넘어가지 않도록 최대 너비 설정 */
+  max-height: 100%; /* 이미지가 부모 요소를 넘어가지 않도록 최대 높이 설정 */
+  position: relative; /* 내부의 절대적으로 위치된 요소들을 포함할 수 있도록 상대적인 위치 지정 */
+}
+
+.dot {
+  position: absolute; /* 점의 위치를 절대적으로 지정 */
+  width: 10px; /* 점의 가로 크기 조정 */
+  height: 10px; /* 점의 세로 크기 조정 */
+  background-color: red; /* 점의 색상 지정 */
+  border-radius: 50%; /* 점을 원 모양으로 만듦 */
+}
+
+.popup {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: rgba(255, 255, 255, 0.9); /* 배경색과 투명도 설정 */
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 그림자 효과 추가 */
+  z-index: 999; /* 다른 요소 위에 표시되도록 설정 */
+}
+
+.map-header {
+  padding: 10px;
+  text-align: center;
+  font-size: 24px;
+  font-weight: 600;
+  color: white;
+  background-color: rgb(4, 4, 255);
+}

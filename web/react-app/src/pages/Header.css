@@ -1,0 +1,20 @@
+.head {
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.head-link {
+  text-align: right;
+}
+
+/* .title {
+
+} */
+
+.header-box {
+  position: fixed;
+  z-index: 2; /* 앞으로 나오게 함 */
+  background-color: white;
+  width: 100%; /* 화면 가로폭 전체를 차지 */
+  box-shadow: 2px 4px 6px rgba(0, 0, 0, 0.1); /* 상하좌우에 그림자를 강조 */
+}
