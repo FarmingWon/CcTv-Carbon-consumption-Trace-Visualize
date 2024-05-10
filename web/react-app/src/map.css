@@ -1,19 +1,20 @@
 /* Map.css */
 
 .map-box {
-  width: 1000px; /* 카드의 가로 크기 조정 */
-  height: 600px; /* 카드의 세로 크기 조정 */
-  /* border: 1px solid #ddd;  */
-  border-radius: 11px; /* 카드 모서리를 둥글게 만듦 */
-  box-shadow: 2px 4px 6px rgba(0, 0, 0, 0.1); /* 상하좌우에 그림자를 강조 */
-  overflow: hidden; /* 내부 컨텐츠의 넘치는 부분을 잘라냄 */
-  display: flex; /* 내부 컨텐츠를 가로로 배열하기 위해 Flexbox 사용 */
-  flex-direction: column; /* 내부 컨텐츠를 세로로 배열하기 위해 */
-  position: absolute; /* 절대 위치 지정 */
-  top: 50%; /* 세로 가운데 정렬 */
-  left: 50%; /* 가로 가운데 정렬 */
-  transform: translate(-50%, -50%); /* 요소의 중앙을 화면의 중앙으로 이동 */
+  width: 800px;
+  height: 600px;
+
+  padding: 3%;
+  border-radius: 11px;
+  box-shadow: 2px 4px 6px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  margin: 0; /* 수평 가운데 정렬 제거 */
+  top: 50px;
   background-color: white;
+  font-family: Nunito, sans-serif;
 }
 
 .world-map {
@@ -35,20 +36,24 @@
 
 .popup {
   position: absolute;
-  top: 0;
-  left: 0;
-  background-color: rgba(255, 255, 255, 0.9); /* 배경색과 투명도 설정 */
+  background-color: white;
   padding: 10px;
   border-radius: 5px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 그림자 효과 추가 */
-  z-index: 999; /* 다른 요소 위에 표시되도록 설정 */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  opacity: 0.1; /* 초기에는 투명한 상태로 시작 */
+  transition: opacity 0.3s ease;
+}
+
+.popup.show {
+  opacity: 1; /* 팝업이 표시될 때 서서히 나타나도록 설정 */
 }
 
 .map-header {
   padding: 10px;
   text-align: center;
   font-size: 24px;
-  font-weight: 600;
-  color: white;
-  background-color: rgb(4, 4, 255);
+  font-weight: 700;
+  color: rgb(0, 0, 0);
+  margin-bottom: 1rem;
+  /* background-color: rgb(4, 4, 255); */
 }

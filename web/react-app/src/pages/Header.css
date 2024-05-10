@@ -5,16 +5,26 @@
 
 .head-link {
   text-align: right;
+  margin-left: 60rem;
 }
 
-/* .title {
-
-} */
-
 .header-box {
-  position: fixed;
-  z-index: 2; /* 앞으로 나오게 함 */
+  /* position: fixed; */
+  z-index: 2;
   background-color: white;
-  width: 100%; /* 화면 가로폭 전체를 차지 */
-  box-shadow: 2px 4px 6px rgba(0, 0, 0, 0.1); /* 상하좌우에 그림자를 강조 */
+  width: 100%;
+  box-shadow: 2px 4px 6px rgba(0, 0, 0, 0.1);
+  display: flex; /* 내부 요소들을 수평으로 배치하기 위해 flex 사용 */
+  align-items: center; /* 내부 요소들을 세로 방향으로 가운데 정렬 */
+  font-family: Nunito, sans-serif;
+}
+
+/* 내부 요소에 높이를 설정 */
+.header-box .inner-content {
+  height: 100%; /* 헤더 박스의 높이와 동일하게 설정 */
+}
+
+.logoimg {
+  display: flex;
+  align-items: center; /* 이미지를 세로 방향으로 가운데 정렬 */
 }
