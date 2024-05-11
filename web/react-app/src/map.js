@@ -26,19 +26,19 @@ function WorldMap() {
         {/* 점들을 표시하고 마우스 이벤트를 추가 */}
         <div
           className="dot"
-          style={{ top: '252px', left: '130px' }}
+          style={{ top: '240px', left: '130px' }}
           onMouseOver={() => handleMouseOver('Point A 정보(us캘리포니아)', 130, 252)}
           onMouseOut={handleMouseOut}
         ></div>
         <div
           className="dot"
-          style={{ top: '185px', left: '463px' }}
+          style={{ top: '190px', left: '320px' }}
           onMouseOver={() => handleMouseOver('Point B 정보(uk)', 463, 185)}
           onMouseOut={handleMouseOut}
         ></div>
         <div
           className="dot"
-          style={{ top: '250px', left: '822px' }}
+          style={{ top: '237px', left: '545px' }}
           onMouseOver={() => handleMouseOver('Point C 정보(kr한국)', 822, 250)}
           onMouseOut={handleMouseOut}
         ></div>

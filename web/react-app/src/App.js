@@ -9,7 +9,7 @@ import List from './pages/List';
 import Train from './pages/Train';
 import Header from './pages/Header.js';
 import WorldMap from './map';
-import CarbonIntensityChart from './pages/Intensity.js';
+import Intensity from './pages/Intensity.js';
 
 import './App.css';
 
@@ -26,6 +26,7 @@ function App() {
           <Route path="/List" component={List} />
           <Route path="/Train" component={Train} />
           <Route path="/map" component={WorldMapContainer} />
+          <Route path="/intensity" component={Intensity} />
         </Switch>
         <div className="big-container">
           <div className="component-container">
@@ -33,10 +34,10 @@ function App() {
               <Train />
               <div className="map-component-box">
                 <WorldMap />
+                <div className="intensity-box">
+                  <Intensity />
+                </div>
               </div>
-              {/* <div className="intensity-box">
-                <CarbonIntensityChart />
-              </div> */}
             </div>
           </div>
         </div>
