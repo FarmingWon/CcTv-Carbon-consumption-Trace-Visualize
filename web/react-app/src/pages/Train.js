@@ -15,25 +15,26 @@ const ExecuteCommand = () => {
     e.preventDefault();
 
     try {
+      const selectedCountry = e.target.querySelector('select').value; // 선택된 나라 값을 가져옴 (US, UK, KR).
       const response = await fetch('/execute', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ command: input })
+        body: JSON.stringify({ command: input, country: selectedCountry }) // 선택된 나라 값을 서버로 전송 (US, UK, KR)
       });
 
       if (!response.ok) {
-        throw new Error('Network response was not ok');
+        throw new Error('네트워크 응답이 올바르지 않습니다');
       }
 
       const data = await response.json();
       setOutput(data.output);
       setError('');
     } catch (err) {
-      console.error('Error:', err);
+      console.error('에러:', err);
       setOutput('');
-      setError('Error occurred while executing command.');
+      setError('명령을 실행하는 동안 오류가 발생했습니다.');
     }
   };
 
