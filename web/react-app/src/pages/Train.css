@@ -1,26 +1,56 @@
 @import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;700&display=swap');
 
 .container {
-  display: flex;
-  flex-direction: column;
-  /* align-items: center; */
-  margin-left: 1rem;
+  flex-direction: row; /* 수평으로 정렬하기 위해 수정 */
+  justify-content: space-between; /* 리소스 컨테이너와 터미널 박스 사이의 간격 설정 */
   margin-right: 1rem;
-  font-family: 'Source Sans Pro', Arial, sans-serif;
+  font-family: Nunito, sans-serif;
+  color: white;
+}
+
+.resource-terminal {
+  display: flex;
 }
 
 .resource-container {
   display: flex;
-  justify-content: space-around;
-  width: 95%;
+  align-items: center; /* 세로 가운데 정렬을 위해 추가 */
+  width: 27rem;
+  height: 24rem;
   margin-top: 2rem;
   font-weight: 700;
+  flex-wrap: wrap; /* 차트가 너비를 벗어날 경우 다음 줄로 이동 */
+  /* border: 1px solid #ddd;  */
+  border-radius: 11px; /* 카드 모서리를 둥글게 만듦 */
+  box-shadow: 2px 4px 6px rgba(0, 0, 0, 0.1); /* 상하좌우에 그림자를 강조 */
+  overflow: hidden; /* 내부 컨텐츠의 넘치는 부분을 잘라냄 */
+  padding: 2%;
+  background-color: rgb(255, 255, 255);
+}
+
+.top-charts {
+  display: flex;
+  justify-content: space-around;
+  width: 100%; /* 상단 차트 영역을 100%로 설정하여 차트가 가로 전체에 놓이도록 함 */
+  margin-right: 5rem;
+  margin-bottom: 2rem;
+  padding: 1%;
+}
+
+.bottom-charts {
+  display: flex;
+  justify-content: space-around;
+  width: 100%; /* 하단 차트 영역을 100%로 설정하여 차트가 가로 전체에 놓이도록 함 */
+  margin-right: 5rem;
+  margin-bottom: 4rem;
+  padding: 1%;
 }
 
 .circular-progress {
   width: 100px;
   height: 100px;
   position: relative;
+  margin: auto; /* 차트를 가운데에 고정 */
 }
 
 .head {
@@ -29,8 +59,12 @@
 }
 
 .info {
-  margin-left: 2rem;
+  display: flex;
+  background-color: rgba(255, 255, 255, 0.937);
+  width: 100%; /* 화면 전체 너비를 차지 */
+  margin-top: 1rem;
 }
+
 .inner1 {
   position: absolute;
   top: 50%;
@@ -39,7 +73,9 @@
   z-index: 10;
   text-anchor: middle;
   white-space: nowrap; /* 텍스트가 한 줄로만 표시되도록 설정 */
+  margin-left: 15px;
 }
+
 .inner2 {
   position: absolute;
   top: 50%;
@@ -48,6 +84,7 @@
   z-index: 10;
   text-anchor: middle;
   white-space: nowrap; /* 텍스트가 한 줄로만 표시되도록 설정 */
+  margin-left: 30px;
 }
 .inner3 {
   position: absolute;
@@ -57,6 +94,7 @@
   z-index: 10;
   text-anchor: middle;
   white-space: nowrap; /* 텍스트가 한 줄로만 표시되도록 설정 */
+  margin-left: 15px;
 }
 .inner4 {
   position: absolute;
@@ -66,6 +104,7 @@
   z-index: 10;
   text-anchor: middle;
   white-space: nowrap; /* 텍스트가 한 줄로만 표시되도록 설정 */
+  margin-left: 30px;
 }
 
 .background-circle {
@@ -87,6 +126,41 @@
 .label1 {
   font-size: 17px;
   font-weight: normal;
+  border: 1px solid white;
+  width: auto; /* 가로 길이를 내부 내용에 맞게 자동 조정 */
+  display: inline-block; /* 라벨을 인라인-블록 요소로 변경 */
+  padding: 20px;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  background-color: white;
+  color: black;
+  margin-left: 3rem;
+}
+.label2 {
+  font-size: 17px;
+  font-weight: normal;
+  border: 1px solid white;
+  width: auto; /* 가로 길이를 내부 내용에 맞게 자동 조정 */
+  display: inline-block; /* 라벨을 인라인-블록 요소로 변경 */
+  padding: 20px;
+  margin-left: 10rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  background-color: white;
+  color: black;
+}
+.label3 {
+  font-size: 17px;
+  font-weight: normal;
+  border: 1px solid white;
+  width: auto; /* 가로 길이를 내부 내용에 맞게 자동 조정 */
+  display: inline-block; /* 라벨을 인라인-블록 요소로 변경 */
+  padding: 20px;
+  margin-left: 10rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  background-color: white;
+  color: black;
 }
 
 .parent-container {
@@ -127,210 +201,57 @@
 }
 
 .terminal-box {
-  margin-top: 12rem;
-  margin-left: 3rem;
-}
-
-/* xterm */
-
-.xterm {
-  cursor: text;
+  margin-top: 2rem; /* 위쪽 여백 추가 */
   position: relative;
-  user-select: none;
-  -ms-user-select: none;
-  -webkit-user-select: none;
+  text-align: right;
 }
 
-.xterm.focus,
-.xterm:focus {
-  outline: none;
+.resource-label {
+  text-align: left; /* 왼쪽 정렬 */
+  color: black; /* 검정색 글씨 */
+  font-size: 20px; /* 글씨 크기 */
+
+  padding: 8px; /* 내부 여백 추가 */
 }
 
-.xterm .xterm-helpers {
-  position: absolute;
-  top: 0;
-  /**
-   * The z-index of the helpers must be higher than the canvases in order for
-   * IMEs to appear on top.
-   */
-  z-index: 5;
+.execute-btn {
+  display: inline-block; /* 인라인 블록 요소로 설정 */
+  border: 1px solid #ccc; /* 테두리 추가 및 회색으로 설정 */
+  background-color: #f0f0f0; /* 배경색 설정 */
+  color: #000; /* 글자색 설정 */
+  padding: 10px 20px; /* 내부 여백 설정 */
+  border-radius: 5px; /* 테두리 둥글게 설정 */
+  cursor: pointer; /* 커서를 포인터로 변경하여 클릭 가능한 상태로 설정 */
+  transition: background-color 0.3s, border-color 0.3s, color 0.3s; /* hover 효과를 위한 transition 추가 */
+  margin-top: 20px; /* 버튼을 아래로 이동시키는 마진 값 */
 }
 
-.xterm .xterm-helper-textarea {
-  padding: 0;
-  border: 0;
-  margin: 0;
-  /* Move textarea out of the screen to the far left, so that the cursor is not visible */
-  position: absolute;
-  opacity: 0;
-  left: -9999em;
-  top: 0;
-  width: 0;
-  height: 0;
-  z-index: -5;
-  /** Prevent wrapping so the IME appears against the textarea at the correct position */
-  white-space: nowrap;
-  overflow: hidden;
-  resize: none;
+.execute-btn:hover {
+  background-color: #7dbcff; /* hover 시 배경색 변경 */
+  border-color: #7dbcff; /* hover 시 테두리 색 변경 */
+  color: #fff; /* hover 시 글자색 변경 */
 }
 
-.xterm .composition-view {
-  /* TODO: Composition position got messed up somewhere */
-  background: #000;
-  color: #fff;
-  display: none;
-  position: absolute;
-  white-space: nowrap;
-  z-index: 1;
+.terminal-container {
+  justify-content: center;
+  align-items: center; /* 세로 가운데 정렬을 위해 추가 */
+
+  margin-top: 2rem;
+  font-weight: 700;
+  flex-wrap: wrap; /* 차트가 너비를 벗어날 경우 다음 줄로 이동 */
+  /* border: 1px solid #ddd;  */
+  border-radius: 11px; /* 카드 모서리를 둥글게 만듦 */
+  box-shadow: 2px 4px 6px rgba(0, 0, 0, 0.1); /* 상하좌우에 그림자를 강조 */
+  overflow: hidden; /* 내부 컨텐츠의 넘치는 부분을 잘라냄 */
+  padding: 2%;
+  margin-left: 6rem;
+  background-color: white;
 }
 
-.xterm .composition-view.active {
-  display: block;
+.resource-name {
+  color: black;
 }
 
-.xterm .xterm-viewport {
-  /* On OS X this is required in order for the scroll bar to appear fully opaque */
-  background-color: #000;
-  overflow-y: scroll;
-  cursor: default;
-  position: absolute;
-  right: 0;
-  left: 0;
-  top: 0;
-  bottom: 0;
-}
-
-.xterm .xterm-screen {
-  position: relative;
-}
-
-.xterm .xterm-screen canvas {
-  position: absolute;
-  left: 0;
-  top: 0;
-}
-
-.xterm .xterm-scroll-area {
-  visibility: hidden;
-}
-
-.xterm-char-measure-element {
-  display: inline-block;
-  visibility: hidden;
-  position: absolute;
-  top: 0;
-  left: -9999em;
-  line-height: normal;
-}
-
-.xterm.enable-mouse-events {
-  /* When mouse events are enabled (eg. tmux), revert to the standard pointer cursor */
-  cursor: default;
-}
-
-.xterm.xterm-cursor-pointer,
-.xterm .xterm-cursor-pointer {
-  cursor: pointer;
-}
-
-.xterm.column-select.focus {
-  /* Column selection mode */
-  cursor: crosshair;
-}
-
-.xterm .xterm-accessibility:not(.debug),
-.xterm .xterm-message {
-  position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  right: 0;
-  z-index: 10;
-  color: transparent;
-  pointer-events: none;
-}
-
-.xterm .xterm-accessibility-tree:not(.debug) *::selection {
-  color: transparent;
-}
-
-.xterm .xterm-accessibility-tree {
-  user-select: text;
-  white-space: pre;
-}
-
-.xterm .live-region {
-  position: absolute;
-  left: -9999px;
-  width: 1px;
-  height: 1px;
-  overflow: hidden;
-}
-
-.xterm-dim {
-  /* Dim should not apply to background, so the opacity of the foreground color is applied
-   * explicitly in the generated class and reset to 1 here */
-  opacity: 1 !important;
-}
-
-.xterm-underline-1 {
-  text-decoration: underline;
-}
-.xterm-underline-2 {
-  text-decoration: double underline;
-}
-.xterm-underline-3 {
-  text-decoration: wavy underline;
-}
-.xterm-underline-4 {
-  text-decoration: dotted underline;
-}
-.xterm-underline-5 {
-  text-decoration: dashed underline;
-}
-
-.xterm-overline {
-  text-decoration: overline;
-}
-
-.xterm-overline.xterm-underline-1 {
-  text-decoration: overline underline;
-}
-.xterm-overline.xterm-underline-2 {
-  text-decoration: overline double underline;
-}
-.xterm-overline.xterm-underline-3 {
-  text-decoration: overline wavy underline;
-}
-.xterm-overline.xterm-underline-4 {
-  text-decoration: overline dotted underline;
-}
-.xterm-overline.xterm-underline-5 {
-  text-decoration: overline dashed underline;
-}
-
-.xterm-strikethrough {
-  text-decoration: line-through;
-}
-
-.xterm-screen .xterm-decoration-container .xterm-decoration {
-  z-index: 6;
-  position: absolute;
-}
-
-.xterm-screen .xterm-decoration-container .xterm-decoration.xterm-decoration-top-layer {
-  z-index: 7;
-}
-
-.xterm-decoration-overview-ruler {
-  z-index: 8;
-  position: absolute;
-  top: 0;
-  right: 0;
-  pointer-events: none;
-}
-
-.xterm-decoration-top {
-  z-index: 2;
-  position: relative;
+.resource-value {
+  color: black;
 }

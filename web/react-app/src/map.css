@@ -1,0 +1,59 @@
+/* Map.css */
+
+.map-box {
+  width: 600px;
+  height: 500px;
+
+  padding: 3%;
+  border-radius: 11px;
+  box-shadow: 2px 4px 6px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  margin: 0; /* 수평 가운데 정렬 제거 */
+  top: 50px;
+  background-color: white;
+  font-family: Nunito, sans-serif;
+}
+
+.world-map {
+  flex: 1; /* 내부 컨텐츠가 모든 공간을 차지하도록 함 */
+  width: auto; /* 이미지의 너비를 부모 요소에 맞게 자동 조정 */
+  height: auto; /* 이미지의 높이를 부모 요소에 맞게 자동 조정 */
+  max-width: 100%; /* 이미지가 부모 요소를 넘어가지 않도록 최대 너비 설정 */
+  max-height: 100%; /* 이미지가 부모 요소를 넘어가지 않도록 최대 높이 설정 */
+  position: relative; /* 내부의 절대적으로 위치된 요소들을 포함할 수 있도록 상대적인 위치 지정 */
+}
+
+.dot {
+  position: absolute; /* 점의 위치를 절대적으로 지정 */
+  width: 10px; /* 점의 가로 크기 조정 */
+  height: 10px; /* 점의 세로 크기 조정 */
+  background-color: red; /* 점의 색상 지정 */
+  border-radius: 50%; /* 점을 원 모양으로 만듦 */
+}
+
+.popup {
+  position: absolute;
+  background-color: white;
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  opacity: 0.1; /* 초기에는 투명한 상태로 시작 */
+  transition: opacity 0.3s ease;
+}
+
+.popup.show {
+  opacity: 1; /* 팝업이 표시될 때 서서히 나타나도록 설정 */
+}
+
+.map-header {
+  padding: 10px;
+  text-align: center;
+  font-size: 24px;
+  font-weight: 700;
+  color: rgb(0, 0, 0);
+  margin-bottom: 1rem;
+  /* background-color: rgb(4, 4, 255); */
+}
