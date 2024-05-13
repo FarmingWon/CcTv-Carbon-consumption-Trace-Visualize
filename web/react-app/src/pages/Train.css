@@ -16,7 +16,7 @@
   display: flex;
   align-items: center; /* 세로 가운데 정렬을 위해 추가 */
   width: 27rem;
-  height: 24rem;
+  height: 25rem;
   margin-top: 2rem;
   font-weight: 700;
   flex-wrap: wrap; /* 차트가 너비를 벗어날 경우 다음 줄로 이동 */
@@ -26,6 +26,7 @@
   overflow: hidden; /* 내부 컨텐츠의 넘치는 부분을 잘라냄 */
   padding: 2%;
   background-color: rgb(255, 255, 255);
+  margin-left: 5rem;
 }
 
 .top-charts {
@@ -244,7 +245,7 @@
   box-shadow: 2px 4px 6px rgba(0, 0, 0, 0.1); /* 상하좌우에 그림자를 강조 */
   overflow: hidden; /* 내부 컨텐츠의 넘치는 부분을 잘라냄 */
   padding: 2%;
-  margin-left: 6rem;
+  margin-left: 2rem;
   background-color: white;
 }
 
@@ -255,3 +256,27 @@
 .resource-value {
   color: black;
 }
+
+.cloudinfo {
+  font-size: 15px;
+  color: #00000094;
+}
+.region {
+  font-size: 15px;
+  color: #00000094;
+}
+.carbon-density {
+  font-size: 15px;
+  color: #00000094;
+}
+.test {
+  color: black;
+}
+
+.output {
+  color: black;
+}
+
+/* .re-te {
+  
+} */
