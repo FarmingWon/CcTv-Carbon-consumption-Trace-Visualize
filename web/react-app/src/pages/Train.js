@@ -195,7 +195,7 @@ const Train = () => {
 
   return (
     <div className="container">
-      <div className="info">
+      {/* <div className="info">
         <div className="label1">
           Cloud info :<p></p>
           <span className="cloudinfo">AWS(example)</span>
@@ -208,7 +208,7 @@ const Train = () => {
           Current carbon density :<p></p>
           <span className="carbon-density">example</span>
         </div>
-      </div>
+      </div> */}
 
       <div className="resource-terminal">
         <div className="re-te">
