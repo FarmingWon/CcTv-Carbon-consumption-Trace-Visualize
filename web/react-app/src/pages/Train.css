@@ -14,50 +14,58 @@
 
 .resource-container {
   display: flex;
-  align-items: center; /* 세로 가운데 정렬을 위해 추가 */
-  /* width: 27rem;
-  height: 25rem; */
-
+  align-items: flex-start; /* 수정: 상단 정렬로 변경 */
   width: 40rem;
-  height: 70rem;
+  height: rem;
   margin-top: 2rem;
   font-weight: 700;
-  flex-wrap: wrap; /* 차트가 너비를 벗어날 경우 다음 줄로 이동 */
-  /* border: 1px solid #ddd;  */
-  border-radius: 11px; /* 카드 모서리를 둥글게 만듦 */
+  flex-wrap: wrap;
+  border-radius: 11px;
   box-shadow: 2px 4px 6px rgba(0, 0, 0, 0.1), 4px 6px 8px rgba(0, 0, 0, 0.05),
-    -1px -1px 3px rgba(0, 0, 0, 0.05); /* 좌측과 위쪽에 추가 그림자 */
-
-  overflow: hidden; /* 내부 컨텐츠의 넘치는 부분을 잘라냄 */
+    -1px -1px 3px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
   padding: 2%;
   background-color: rgb(255, 255, 255);
   margin-left: 5rem;
 }
 
-.top-charts {
+.circular-progress {
+  display: inline-block; /* 수정: 인라인 블록 요소로 설정하여 수평으로 배치 */
+  width: 200px; /* 또는 다른 고정된 값 */
+  max-width: 100%;
+}
+
+.top-chart,
+.bottom-chart {
   display: flex;
   justify-content: space-around;
-  width: 100%; /* 상단 차트 영역을 100%로 설정하여 차트가 가로 전체에 놓이도록 함 */
+  width: 100%; /* 수정: 전체 너비를 사용하도록 변경 */
+  padding: 1%;
+  margin-bottom: 2rem;
+}
+
+.top-chart .circular-progress,
+.bottom-chart .circular-progress {
+  width: 200px; /* 수정: 고정된 너비 */
+  max-width: 100%;
+}
+/* .top-chart {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
   margin-right: 5rem;
   margin-bottom: 2rem;
   padding: 1%;
-}
+} */
 
-.bottom-charts {
+/* .bottom-chart {
   display: flex;
   justify-content: space-around;
-  width: 100%; /* 하단 차트 영역을 100%로 설정하여 차트가 가로 전체에 놓이도록 함 */
+  width: 100%;
   margin-right: 5rem;
   margin-bottom: 4rem;
   padding: 1%;
-}
-
-.circular-progress {
-  width: 100px;
-  height: 100px;
-  position: relative;
-  margin: auto; /* 차트를 가운데에 고정 */
-}
+} */
 
 .head {
   margin-top: 2rem;
@@ -69,6 +77,11 @@
   background-color: rgba(255, 255, 255, 0.937);
   width: 100%; /* 화면 전체 너비를 차지 */
   margin-top: 1rem;
+}
+
+.inner {
+  position: absolute;
+  margin-left: 3rem;
 }
 
 .inner1 {
@@ -213,11 +226,12 @@
 }
 
 .resource-label {
-  text-align: left; /* 왼쪽 정렬 */
-  color: black; /* 검정색 글씨 */
-  font-size: 20px; /* 글씨 크기 */
-
-  padding: 8px; /* 내부 여백 추가 */
+  text-align: left;
+  color: black;
+  font-size: 20px;
+  padding: 8px;
+  margin-bottom: 1rem; /* 수정: 레이블 아래 여백 추가 */
+  width: 100%;
 }
 
 .execute-btn {
@@ -301,3 +315,8 @@
 /* .re-te {
   
 } */
+
+.com-info {
+  padding: 10px;
+  color: #4c4c4c;
+}

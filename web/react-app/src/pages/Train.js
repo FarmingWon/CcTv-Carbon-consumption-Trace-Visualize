@@ -77,7 +77,6 @@ const Train = () => {
     cpu_info: 'Intel Core i7~~',
     gpu_info: 'NVIDIA GeForce RTX 3080~~',
     memory_info: 16,
-    epoch: 10,
     CI: 0.8
   });
   const [resourceUK, setResourceUK] = useState({
@@ -87,7 +86,6 @@ const Train = () => {
     cpu_info: 'AMD Ryzen 9~~',
     gpu_info: 'NVIDIA GeForce GTX 2080~~',
     memory_info: 32,
-    epoch: 15,
     CI: 0.6
   });
   const [resourceKR, setResourceKR] = useState({
@@ -97,11 +95,8 @@ const Train = () => {
     cpu_info: 'Intel Core i9~~',
     gpu_info: 'AMD Radeon RX 6800~~~',
     memory_info: 8,
-    epoch: 20,
     CI: 0.7
   });
-
-  // 나머지 코드는 그대로 유지됩니다.
 
   const fetchData = async (endpoint, setter) => {
     try {
@@ -123,53 +118,71 @@ const Train = () => {
   }, []);
 
   const renderResourceTerminal = (resource, locationName) => {
-    const data = [
+    const topData = [
       { name: 'CPU', value: resource.cpu },
       { name: 'GPU', value: resource.gpu },
-      { name: 'Used Memory', value: resource.used_memory },
+      { name: 'Memory', value: resource.used_memory / resource.memory_info } // 수정된 부분
+    ];
+
+    const bottomData = [
       { name: 'Memory Info', value: resource.memory_info },
-      { name: 'Epoch', value: resource.epoch },
       { name: 'CI', value: resource.CI }
     ];
 
-    const colors = ['#00FF00', '#FFFF00', '#FFA500', '#FF0000', '#0000FF', '#00FFFF'];
+    const colors = ['#00FF00', '#FFFF00', '#FFA500', '#FF0000', '#00FFFF'];
 
     return (
       <div className="resource-terminal">
         <div className="resource-container">
-          <div className="top-text">
-            <h3>{resourceKR.cpu_info}</h3>
-            <h3>{resourceKR.gpu_info}</h3>
-            <h3>{resourceKR.CI}</h3>
-          </div>
           <span className="resource-label">resources in use ({locationName})</span>
-          <div className="charts">
-            {data.map((entry, index) => (
-              <div className="circular-progress" key={index}>
-                <PieChart width={200} height={200}>
-                  <Pie
-                    data={[entry, { name: 'Empty', value: 100 - entry.value }]}
-                    cx="50%"
-                    cy="50%"
-                    startAngle={90}
-                    endAngle={-270}
-                    innerRadius="40%"
-                    outerRadius="60%"
-                    fill={[colors[index], '#eee']}
-                    dataKey="value"
-                    labelLine={false}
-                  >
-                    <Cell key={`cell-${index}`} />
-                    <Cell key={`cell-${index + 1}`} fill="#eee" />
-                  </Pie>
-                </PieChart>
-                <div className="inner">
-                  <span className="resource-name">{entry.name}</span>
-                  <br />
-                  <span className="resource-value">{entry.value}</span>
+
+          <div className="com-info">
+            <p>CPU 이름: {resource.cpu_info}</p>
+            <p>GPU 이름: {resource.gpu_info}</p>
+            <p>탄소집약도: {resource.CI}</p>
+          </div>
+
+          <div className="top-chart">
+            <div className="top-text">
+              {topData.map((entry, index) => (
+                <div className="circular-progress" key={index}>
+                  <PieChart width={200} height={200}>
+                    <Pie
+                      data={[entry, { name: 'Empty', value: 100 - entry.value }]}
+                      cx="50%"
+                      cy="50%"
+                      startAngle={90}
+                      endAngle={-270}
+                      innerRadius="40%"
+                      outerRadius="60%"
+                      fill={[colors[index], '#eee']}
+                      dataKey="value"
+                      labelLine={false}
+                    >
+                      <Cell key={`cell-${index}`} />
+                      <Cell key={`cell-${index + 1}`} fill="#eee" />
+                    </Pie>
+                  </PieChart>
+                  <div className="inner">
+                    <span
+                      className="resource-name"
+                      style={{ marginLeft: index === 0 ? '34px' : index === 1 ? '35px' : '23px' }}
+                    >
+                      {entry.name}
+                    </span>
+                    <br />
+                    <span
+                      className="resource-value"
+                      style={{ marginLeft: index === 0 ? '34px' : index === 1 ? '35px' : '23px' }}
+                    >
+                      {entry.name === 'Memory'
+                        ? `${(entry.value * 100).toFixed(2)}%`
+                        : `${entry.value}%`}
+                    </span>
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
         <ExecuteCommand endpoint={`/ssh${locationName}`} locationName={locationName} />
