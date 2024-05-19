@@ -6,7 +6,8 @@
 
   padding: 3%;
   border-radius: 11px;
-  box-shadow: 2px 4px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 2px 4px 6px rgba(0, 0, 0, 0.1), 4px 6px 8px rgba(0, 0, 0, 0.05),
+    -1px -1px 3px rgba(0, 0, 0, 0.05); /* 좌측과 위쪽에 추가 그림자 */
   overflow: hidden;
   display: flex;
   flex-direction: column;

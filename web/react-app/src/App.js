@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Link, Switch } from 'react-router-dom';
+import $ from 'jquery';
+window.jQuery = $;
+window.$ = $;
 
 // import Home from './pages/Home';
 import About from './pages/About';

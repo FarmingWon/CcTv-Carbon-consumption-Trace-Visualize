@@ -5,7 +5,7 @@
   justify-content: space-between; /* 리소스 컨테이너와 터미널 박스 사이의 간격 설정 */
   margin-right: 1rem;
   font-family: Nunito, sans-serif;
-  color: white;
+  color: black;
 }
 
 .resource-terminal {
@@ -15,14 +15,19 @@
 .resource-container {
   display: flex;
   align-items: center; /* 세로 가운데 정렬을 위해 추가 */
-  width: 27rem;
-  height: 25rem;
+  /* width: 27rem;
+  height: 25rem; */
+
+  width: 40rem;
+  height: 70rem;
   margin-top: 2rem;
   font-weight: 700;
   flex-wrap: wrap; /* 차트가 너비를 벗어날 경우 다음 줄로 이동 */
   /* border: 1px solid #ddd;  */
   border-radius: 11px; /* 카드 모서리를 둥글게 만듦 */
-  box-shadow: 2px 4px 6px rgba(0, 0, 0, 0.1); /* 상하좌우에 그림자를 강조 */
+  box-shadow: 2px 4px 6px rgba(0, 0, 0, 0.1), 4px 6px 8px rgba(0, 0, 0, 0.05),
+    -1px -1px 3px rgba(0, 0, 0, 0.05); /* 좌측과 위쪽에 추가 그림자 */
+
   overflow: hidden; /* 내부 컨텐츠의 넘치는 부분을 잘라냄 */
   padding: 2%;
   background-color: rgb(255, 255, 255);
@@ -242,11 +247,27 @@
   flex-wrap: wrap; /* 차트가 너비를 벗어날 경우 다음 줄로 이동 */
   /* border: 1px solid #ddd;  */
   border-radius: 11px; /* 카드 모서리를 둥글게 만듦 */
-  box-shadow: 2px 4px 6px rgba(0, 0, 0, 0.1); /* 상하좌우에 그림자를 강조 */
+  box-shadow: 2px 4px 6px rgba(0, 0, 0, 0.1), 4px 6px 8px rgba(0, 0, 0, 0.05),
+    -1px -1px 3px rgba(0, 0, 0, 0.05); /* 좌측과 위쪽에 추가 그림자 */
   overflow: hidden; /* 내부 컨텐츠의 넘치는 부분을 잘라냄 */
   padding: 2%;
   margin-left: 2rem;
   background-color: white;
+}
+
+.terminal-input {
+  padding: 10px;
+  font-size: 16px;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  margin-right: 10px;
+  background-color: black;
+  color: white;
+  width: 300px;
+  height: 100px;
+  text-align: left;
+  font-family: monospace;
+  caret-color: white;
 }
 
 .resource-name {

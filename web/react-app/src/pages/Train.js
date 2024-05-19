@@ -14,7 +14,6 @@ const ExecuteCommand = ({ endpoint, locationName }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // 터미널 서버 연동 부분 (211 line 정도 보면 연동관련 내용 나와있습니다~!)
     try {
       const response = await fetch(endpoint, {
         method: 'POST',
@@ -39,64 +38,70 @@ const ExecuteCommand = ({ endpoint, locationName }) => {
   };
 
   return (
-    <div className="re-te">
-      <div className="terminal-container">
-        <span className="resource-label">terminal ({locationName})</span>
-        <p></p>
-        <br></br>
-        <div className="top-charts">
-          <form onSubmit={handleSubmit}>
-            <input
-              type="text"
-              value={input}
-              onChange={handleInputChange}
-              placeholder={'Please enter the command'}
-              required
-              style={{
-                padding: '10px',
-                fontSize: '16px',
-                border: '2px solid #ccc',
-                borderRadius: '4px',
-                marginRight: '10px',
-                backgroundColor: 'black',
-                color: 'white',
-                width: '300px',
-                height: '100px',
-                textAlign: 'left',
-                fontFamily: 'monospace',
-                caretColor: 'white',
-                '::placeholder': {
-                  color: '#999',
-                  fontStyle: 'italic'
-                }
-              }}
-            />
-            <button type="submit" className="execute-btn">
-              Execute
-            </button>
-          </form>
-          {output && (
-            <div>
-              <h2>Output:</h2>
-              <pre>{output}</pre>
-            </div>
-          )}
-          {error && (
-            <div>
-              <h2>Error:</h2>
-              <pre>{error}</pre>
-            </div>
-          )}
+    <div className="terminal-container">
+      <span className="resource-label">terminal ({locationName})</span>
+      <form onSubmit={handleSubmit}>
+        <input
+          type="text"
+          value={input}
+          onChange={handleInputChange}
+          placeholder={'Please enter the command'}
+          required
+          className="terminal-input"
+        />
+        <button type="submit" className="execute-btn">
+          Execute
+        </button>
+      </form>
+      {output && (
+        <div>
+          <h2>Output:</h2>
+          <pre>{output}</pre>
         </div>
-      </div>
+      )}
+      {error && (
+        <div>
+          <h2>Error:</h2>
+          <pre>{error}</pre>
+        </div>
+      )}
     </div>
   );
 };
 
 const Train = () => {
-  const [resourceUS, setResourceUS] = useState({ cpu: 0, memory: 0, gpu: 0, epoch: 0 });
-  const [resourceUK, setResourceUK] = useState({ cpu: 0, memory: 0, gpu: 0, epoch: 0 });
-  const [resourceKR, setResourceKR] = useState({ cpu: 0, memory: 0, gpu: 0, epoch: 0 });
+  const [resourceUS, setResourceUS] = useState({
+    cpu: 50,
+    gpu: 60,
+    used_memory: 70,
+    cpu_info: 'Intel Core i7~~',
+    gpu_info: 'NVIDIA GeForce RTX 3080~~',
+    memory_info: 16,
+    epoch: 10,
+    CI: 0.8
+  });
+  const [resourceUK, setResourceUK] = useState({
+    cpu: 40,
+    gpu: 70,
+    used_memory: 80,
+    cpu_info: 'AMD Ryzen 9~~',
+    gpu_info: 'NVIDIA GeForce GTX 2080~~',
+    memory_info: 32,
+    epoch: 15,
+    CI: 0.6
+  });
+  const [resourceKR, setResourceKR] = useState({
+    cpu: 30,
+    gpu: 50,
+    used_memory: 60,
+    cpu_info: 'Intel Core i9~~',
+    gpu_info: 'AMD Radeon RX 6800~~~',
+    memory_info: 8,
+    epoch: 20,
+    CI: 0.7
+  });
+
+  // 나머지 코드는 그대로 유지됩니다.
 
   const fetchData = async (endpoint, setter) => {
     try {
@@ -111,7 +116,6 @@ const Train = () => {
     }
   };
 
-  // get_resourceUS이런식으로 요청했습니다!
   useEffect(() => {
     fetchData('/get_resourceUS', setResourceUS);
     fetchData('/get_resourceUK', setResourceUK);
@@ -121,19 +125,26 @@ const Train = () => {
   const renderResourceTerminal = (resource, locationName) => {
     const data = [
       { name: 'CPU', value: resource.cpu },
-      { name: 'Memory', value: resource.memory },
       { name: 'GPU', value: resource.gpu },
-      { name: 'Epoch', value: resource.epoch }
+      { name: 'Used Memory', value: resource.used_memory },
+      { name: 'Memory Info', value: resource.memory_info },
+      { name: 'Epoch', value: resource.epoch },
+      { name: 'CI', value: resource.CI }
     ];
 
-    const colors = ['#00FF00', '#FFFF00', '#FFA500', '#FF0000'];
+    const colors = ['#00FF00', '#FFFF00', '#FFA500', '#FF0000', '#0000FF', '#00FFFF'];
 
     return (
-      <div className="re-te">
+      <div className="resource-terminal">
         <div className="resource-container">
+          <div className="top-text">
+            <h3>{resourceKR.cpu_info}</h3>
+            <h3>{resourceKR.gpu_info}</h3>
+            <h3>{resourceKR.CI}</h3>
+          </div>
           <span className="resource-label">resources in use ({locationName})</span>
-          <div className="top-charts">
-            {data.slice(0, 2).map((entry, index) => (
+          <div className="charts">
+            {data.map((entry, index) => (
               <div className="circular-progress" key={index}>
                 <PieChart width={200} height={200}>
                   <Pie
@@ -152,77 +163,26 @@ const Train = () => {
                     <Cell key={`cell-${index + 1}`} fill="#eee" />
                   </Pie>
                 </PieChart>
-                <div className={`inner${index + 1}`}>
+                <div className="inner">
                   <span className="resource-name">{entry.name}</span>
                   <br />
-                  <span className="resource-value">{entry.value}%</span>
-                </div>
-              </div>
-            ))}
-          </div>
-          <div className="bottom-charts">
-            {data.slice(2).map((entry, index) => (
-              <div className="circular-progress" key={index}>
-                <PieChart width={200} height={200}>
-                  <Pie
-                    data={[entry, { name: 'Empty', value: 100 - entry.value }]}
-                    cx="50%"
-                    cy="50%"
-                    startAngle={90}
-                    endAngle={-270}
-                    innerRadius="40%"
-                    outerRadius="60%"
-                    fill={[colors[index + 2], '#eee']}
-                    dataKey="value"
-                    labelLine={false}
-                  >
-                    <Cell key={`cell-${index}`} />
-                    <Cell key={`cell-${index + 1}`} fill="#eee" />
-                  </Pie>
-                </PieChart>
-                <div className={`inner${index + 3}`}>
-                  <span className="resource-name">{entry.name}</span>
-                  <br />
-                  <span className="resource-value">{entry.value}%</span>
+                  <span className="resource-value">{entry.value}</span>
                 </div>
               </div>
             ))}
           </div>
         </div>
+        <ExecuteCommand endpoint={`/ssh${locationName}`} locationName={locationName} />
       </div>
     );
   };
 
   return (
     <div className="container">
-      {/* <div className="info">
-        <div className="label1">
-          Cloud info :<p></p>
-          <span className="cloudinfo">AWS(example)</span>
-        </div>
-        <div className="label2">
-          Region :<p></p>
-          <span className="region">UK(example)</span>
-        </div>
-        <div className="label3">
-          Current carbon density :<p></p>
-          <span className="carbon-density">example</span>
-        </div>
-      </div> */}
-
-      <div className="resource-terminal">
-        <div className="re-te">
-          {renderResourceTerminal(resourceUS, 'US')}
-          <ExecuteCommand endpoint="/sshUS" locationName="US" />
-        </div>
-        <div className="re-te">
-          {renderResourceTerminal(resourceUK, 'UK')}
-          <ExecuteCommand endpoint="/sshUK" locationName="UK" />
-        </div>
-        <div className="re-te">
-          {renderResourceTerminal(resourceKR, 'KR')}
-          <ExecuteCommand endpoint="/sshKR" locationName="KR" />
-        </div>
+      <div className="resource-terminal-wrapper">
+        {renderResourceTerminal(resourceUS, 'US')}
+        {renderResourceTerminal(resourceUK, 'UK')}
+        {renderResourceTerminal(resourceKR, 'KR')}
       </div>
     </div>
   );
