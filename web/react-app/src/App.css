@@ -46,13 +46,14 @@
   background-size: cover; /* 컨테이너 전체를 덮도록 설정 */
   background-position: center; /* 배경 이미지를 가운데 정렬 */
   font-family: Nunito, sans-serif;
+  padding-top: 3rem;
 }
 
 .component-container {
-  background-color: #ffffffef;
-  width: calc(90% - 1rem); /* 전체 화면의 25%를 차지하고 여백을 조정 */
+  background-color: #f1f1f1;
+  width: calc(97% - 1rem); /* 전체 화면의 25%를 차지하고 여백을 조정 */
   min-height: 100px; /* 최소 높이를 100px로 설정 */
-  margin: 1rem auto; /* 상하 1rem, 좌우 자동 여백 설정하여 가운데 정렬 */
+  margin: auto; /* 상하 1rem, 좌우 자동 여백 설정하여 가운데 정렬 */
   padding: 1rem; /* 내부 여백을 1rem으로 설정 */
   box-sizing: border-box; /* 내부 여백을 포함하여 요소의 크기를 계산 */
   border-radius: 8px; /* 테두리를 둥글게 설정 */
@@ -62,6 +63,7 @@
   align-items: flex-start; /* 내부 요소를 위쪽으로 정렬 */
   flex-wrap: wrap; /* 요소들이 여러 줄에 걸쳐 나열되도록 설정 */
   overflow: visible; /* 내용이 넘치는 경우 자르지 않고 보이도록 설정 */
+  align-items: center;
 }
 
 .component-box {
@@ -79,7 +81,8 @@
   height: 500px;
   padding: 3%;
   border-radius: 11px;
-  box-shadow: 2px 4px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 2px 4px 6px rgba(0, 0, 0, 0.1), 4px 6px 8px rgba(0, 0, 0, 0.05),
+    -1px -1px 3px rgba(0, 0, 0, 0.05); /* 좌측과 위쪽에 추가 그림자 */
   overflow: hidden;
   display: flex;
   flex-direction: column;
