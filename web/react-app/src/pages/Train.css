@@ -15,8 +15,7 @@
 .resource-container {
   display: flex;
   align-items: flex-start; /* 수정: 상단 정렬로 변경 */
-  width: 40rem;
-  height: rem;
+  /* width: 40rem; */
   margin-top: 2rem;
   font-weight: 700;
   flex-wrap: wrap;
@@ -255,7 +254,6 @@
 .terminal-container {
   justify-content: center;
   align-items: center; /* 세로 가운데 정렬을 위해 추가 */
-
   margin-top: 2rem;
   font-weight: 700;
   flex-wrap: wrap; /* 차트가 너비를 벗어날 경우 다음 줄로 이동 */
@@ -263,10 +261,11 @@
   border-radius: 11px; /* 카드 모서리를 둥글게 만듦 */
   box-shadow: 2px 4px 6px rgba(0, 0, 0, 0.1), 4px 6px 8px rgba(0, 0, 0, 0.05),
     -1px -1px 3px rgba(0, 0, 0, 0.05); /* 좌측과 위쪽에 추가 그림자 */
-  overflow: hidden; /* 내부 컨텐츠의 넘치는 부분을 잘라냄 */
   padding: 2%;
   margin-left: 2rem;
   background-color: white;
+  word-wrap: break-word; /* 텍스트가 너무 길어서 요소를 벗어날 경우 줄 바꿈 */
+  white-space: pre-wrap; /* 줄 바꿈 유지 */
 }
 
 .terminal-input {
