@@ -49,10 +49,13 @@ const ExecuteCommand = ({ endpoint, locationName }) => {
           required
           className="terminal-input"
         />
-        <button type="submit" className="execute-btn">
+        <button type="submit" class="execute-btn">
           Execute
         </button>
       </form>
+      <button type="button" class="done">
+        실행종료
+      </button>
       {output && (
         <div>
           <h2>Output:</h2>

@@ -10,6 +10,7 @@ import Train from './pages/Train';
 import Header from './pages/Header.js';
 import WorldMap from './map';
 import Intensity from './pages/Intensity.js';
+import dotchart from './pages/dotchart.js';
 
 import './App.css';
 
@@ -27,6 +28,7 @@ function App() {
           <Route path="/Train" component={Train} />
           <Route path="/map" component={WorldMap} />
           <Route path="/intensity" component={Intensity} />
+          <Route path="/dotchart" component={dotchart} />
         </Switch>
         <div className="big-container">
           <div className="component-container">

@@ -15,7 +15,7 @@ function Header() {
           <Link to="/">Home</Link> | <Link to="/about">About</Link> |{' '}
           <Link to="/Counter">Counter</Link> | <Link to="/Input">Input</Link> |{' '}
           <Link to="/List">List</Link> | <Link to="/Train">Train</Link> | <Link to="/map">map</Link>{' '}
-          | <Link to="/Intensity">Intensity</Link>
+          | <Link to="/Intensity">Intensity</Link> | <Link to="/dotchart">dotchart</Link>
         </header>
       </div>
     </div>

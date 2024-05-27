@@ -1,8 +1,8 @@
 /* Map.css */
 
 .map-box {
-  width: 600px;
-  height: 500px;
+  /* width: 600px;
+  height: 500px; */
 
   padding: 3%;
   border-radius: 11px;
@@ -38,15 +38,15 @@
 .popup {
   position: absolute;
   background-color: white;
-  padding: 10px;
-  border-radius: 5px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-  opacity: 0.1; /* 초기에는 투명한 상태로 시작 */
-  transition: opacity 0.3s ease;
+  border: 1px solid black;
+  padding: 5px;
+  z-index: 10;
+  pointer-events: none;
 }
 
-.popup.show {
-  opacity: 1; /* 팝업이 표시될 때 서서히 나타나도록 설정 */
+path:hover {
+  stroke: black;
+  stroke-width: 1.5;
 }
 
 .map-header {
@@ -57,4 +57,11 @@
   color: rgb(0, 0, 0);
   margin-bottom: 1rem;
   /* background-color: rgb(4, 4, 255); */
+}
+
+.world-map-container {
+  display: flex; /* 내부 요소들을 플렉스 컨테이너로 설정 */
+  justify-content: center; /* 수평 가운데 정렬 */
+  align-items: center; /* 수직 가운데 정렬 */
+  height: 100%; /* 높이를 100%로 설정하여 부모 요소의 높이에 맞춤 */
 }
