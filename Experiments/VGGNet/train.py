@@ -4,33 +4,43 @@ from gpu_utils import GPUs
 sys.path.append("./VGGNet/")
 from data_loader import VGG_Data_Load
 from model import VGGnet
-from parser import args
+# from parser import args
 from metrics import metrics_batch, loss_batch, loss_epoch, get_lr, save_loss
+import json
 
 class VGGTrain:
     def __init__(self):
         self.epoch = 0 
         self.is_finish = False
         self.used_time = 0.0
-        self.threshold = args.threshold 
-        self.gpus = GPUs(gpu_id=args.cuda, model="VGGNet", resumption=args.resumption, ssh_server=args.ssh_server, threshold=args.threshold)
+        GPUs.download_parser("VGGNet")
+        with open('VGGNet/parser.json', 'r') as f:
+            self.args = json.load(f)
+        self.threshold = float(self.args['threshold'])
+        self.gpus = GPUs(gpu_id=int(self.args['cuda']), model="VGGNet", resumption=int(self.args['resumption']), ssh_server=int(self.args['ssh_server']), threshold=float(self.args['threshold']))
+        
     
     def vgg_train(self):
-        lr = args.lr
-        epoch_no = args.epoch
-        model_name = args.vgg_model
-        device = torch.device('cuda:' + args.cuda)
-        step_size = args.step_size
-        gamma = args.gamma
-        batch_size = args.batch
-        resumption = args.resumption
+        lr = float(self.args['lr'])
+        epoch_no = int(self.args['epoch'])
+        model_name = self.args['vgg_model']
+        device = torch.device('cuda:' + self.args['cuda'])
+        step_size = int(self.args['step_size'])
+        gamma = float(self.args['gamma'])
+        batch_size = int(self.args['batch'])
+        resumption = int(self.args['resumption'])
         check_PATH = os.getcwd() + "/VGGNet/file/model.pt"
         save_path = os.getcwd() + "/VGGNet/outputs/"
         ## Data Load
         train_dl, val_dl = VGG_Data_Load(batch_size)
         
         model = VGGnet(model_name, in_channels=3, num_classes=10, init_weights=True).to(device)
-        print(f"Learning Rate : {lr}, Epoch : {epoch_no}, Model Name : {model_name}, Batch Size : {batch_size}, CUDA : {args.cuda}, Step_size : {step_size}, Gamma : {gamma}")
+        
+        ## 학습 여부 DB Update
+        self.gpus.learning_update(True)
+        self.gpus.upload_migration(False)
+        
+        print(f"Learning Rate : {lr}, Epoch : {epoch_no}, Model Name : {model_name}, Batch Size : {batch_size}, CUDA : {self.args['cuda']}, Step_size : {step_size}, Gamma : {gamma}")
         if resumption == 0:
             opt = optim.Adam(model.parameters(), lr=lr)
             loss_func = nn.CrossEntropyLoss(reduction="sum")
@@ -76,15 +86,15 @@ class VGGTrain:
                     }, check_PATH)
                     self.gpus.upload_checkpoint()
                     self.gpus.learning_update(False)
+                    self.gpus.upload_migration(True) # True : Migration
                     return
                 save_loss(save_path, epoch+1, train_loss, train_metric,val_loss, val_metric)
                 print("Check Point Save Success")
             self.gpus.learning_update(False)
-
+            self.gpus.upload_migration(False) # False : Stop Migration
 
 
         else:
-
             checkPoint = torch.load(check_PATH)
             print("\n--- Migration Success ---")
             model.load_state_dict(checkPoint['model_state_dict'])
@@ -131,10 +141,12 @@ class VGGTrain:
                     }, check_PATH)
                     self.gpus.upload_checkpoint()
                     self.gpus.learning_update(False)
+                    self.gpus.upload_migration(True) # True : Migration
                     return
                 save_loss(save_path, epoch+1, train_loss, train_metric,val_loss, val_metric)
                 print("Check Point Save Success")
             self.gpus.learning_update(False)
+            self.gpus.upload_migration(False) # False : Stop Migration
 
     
     
