@@ -10,21 +10,23 @@ class GPUs:
         self.return_info = []
         self.carbon_emissions = [0]
         #DB 
-        self._fb = FireBase(model)
+        self.path = os.getcwd()
+        df = pd.read_csv(self.path+"/ssh_data.csv", header=None).values.tolist()[int(ssh_server)]
+        self._fb = FireBase(model, model)
         
         self.gpu_id = gpu_id
         self.model = model
         self._threshold = threshold
         self.epoch = 0
-        self.is_learning = True
-        self.path = os.getcwd()
+        self.is_learning = False
+        
         
         self._carbons = None
         self._elec = electric(self._get_elec_token())
-        df = pd.read_csv(self.path+"/ssh_data.csv", header=None).values.tolist()[int(ssh_server)]
+        
         self._region = df[-2]
         self._region_full = df[-1]
-        self._carbons = asyncio.run(self._elec.get_carbon_intensity(self._region, self._region_full))
+        self._carbons = asyncio.run(self._elec.get_carbon_intensity(self._region))
         self._cal_carbon = self._carbons / (60.0 * 12.0) # 5초마다
 
         
@@ -56,7 +58,7 @@ class GPUs:
         
     # GPU 전력 사용량 측정 함수
     def get_gpu_usage(self):
-        # sudo nvidia-smi command
+        # sudo nvidia-smi command 
         command = f"nvidia-smi --id {self.gpu_id} --query-gpu=power.draw --format=csv,noheader,nounits"
         # command = f"nvidia-smi"
         result = subprocess.check_output(command, shell=True, universal_newlines=True)
@@ -87,51 +89,36 @@ class GPUs:
 
     # CPU 사용량 모니터링
     def monitor_cpu(self):
-        cpu_percent = psutil.cpu_percent(percpu=True)
-        return (min(cpu_percent) + max(cpu_percent)) / 2
+        try:
+            cpu_percent_command = "top -bn1 | grep \"Cpu(s)\" | sed \"s/.*, *\([0-9.]*\)%* id.*/\\1/\" | awk '{print 100 - $1}'"
+            result = subprocess.check_output(cpu_percent_command, shell=True, universal_newlines=True)
+            result = float(result)
+            return result
+        except Exception as e:
+            print(e)
+            cpu_percent = psutil.cpu_percent(percpu=True)
+            return (min(cpu_percent) + max(cpu_percent)) / 2
 
     # 메모리 사용량 모니터링
     def monitor_memory(self):
-        memory = psutil.virtual_memory()
-        used_memory = memory.used / (1024*1024*1024) # 메모리 사용량을 GB 단위로 변환
-        available_memory = memory.available / (1024*1024*1024) # 사용가능한  메모리 양을 GB 단위로 변환
-        total_memory = used_memory + available_memory
-        return used_memory, total_memory
+        try:
+            memory_command = "free | awk '/^Mem:/ {print  $3 / 1024 \",\"  $2 / 1024 }'"
+            result = subprocess.check_output(memory_command, shell=True, universal_newlines=True)
+            used_memory, total_memory = result.strip().split(',')
+            return float(used_memory), float(total_memory)
+        except Exception as e:
+            print(e)
+            memory = psutil.virtual_memory()
+            used_memory = memory.used / (1024*1024*1024) # 메모리 사용량을 GB 단위로 변환
+            available_memory = memory.available / (1024*1024*1024) # 사용가능한  메모리 양을 GB 단위로 변환
+            total_memory = used_memory + available_memory
+            return used_memory, total_memory
 
     def _get_elec_token(self):
         elec_path = self.path + "/electricmaps_api.txt"
         with open(elec_path, 'r') as f:
             token = f.readline()
         return token
-    
-    # def learning_start(self):
-    #     print(self.model, "Learning Start")
-    #     # command = [
-    #     #     'python', f'{self.model}/train.py',
-    #     #     '--epoch', str(epoch),
-    #     #     '--lr', str(lr),
-    #     #     '--batch', str(batch),
-    #     #     '--vgg_model', str(vgg_model),
-    #     #     '--cuda', str(cuda),
-    #     #     '--step_size', str(step_size),
-    #     #     '--gamma', str(gamma),
-    #     #     '--resumption', str(resumption)
-    #     # ]
-    #     if self.model == "VGGNet":
-    #         self.model_object = VGGTrain()
-        
-    #     self.get_gpu_usage()
-    #     thread = threading.Thread(target=self.get_resource)
-    #     thread.start()
-        
-    #     ### 여기에 다른 곳으로 마이그레이션 하는거 넣으면 될듯
-    #     self.model_object.vgg_train()
-        
-    #     # subprocess.run(command)
-    #     self.is_learning = False
-    #     total_used_gpu_electic = sum(self.used_gpu)
-    #     print(f"총 전력 : {total_used_gpu_electic}W 사용")
-    #     print(f"총 시간 : {self.model_object.used_time}s 소모")
     
     def gpus_measurement(self):
         while self.is_learning:
@@ -176,9 +163,12 @@ class GPUs:
     
     def learning_update(self, is_learning):
         self.is_learning = is_learning
+        if self.is_learning == True:
+            thread = threading.Thread(target=self.gpus_measurement)
+            thread.start()
     
     def update_carbon(self):
-        self._carbons = asyncio.run(self._elec.get_carbon_intensity(self._region, self._region_full)) # 5s 간격
+        self._carbons = asyncio.run(self._elec.get_carbon_intensity(self._region)) # 5s 간격
         self._cal_carbon = self._cal_carbon / (60.0 * 12.0)
         
     def can_learning(self):
@@ -187,10 +177,19 @@ class GPUs:
             return False
         else:
             return True
-
+    
+    def upload_migration(self, is_migration):
+        self._fb.upload_migration(is_migration, False, self.is_learning, self._region ,self._region_full)
+    
+    @staticmethod
+    def download_parser(model):
+        _fb = FireBase(model, "down")
+        _fb.download_parser()
+        del _fb
 
 if __name__ == "__main__":
     gpus = GPUs(gpu_id="0", model="VGGNet", resumption=1, ssh_server=1, threshold=250)
+
     # gpus.upload_resource()
     # gpus.download_resource()
     # print(gpus.get_all_resource())
