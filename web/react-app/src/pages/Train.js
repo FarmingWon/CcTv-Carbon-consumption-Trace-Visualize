@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import './Train.css';
-import { PieChart, Pie, Cell } from 'recharts';
+import { PieChart, Pie, Cell, Tooltip } from 'recharts';
 
 const ExecuteCommand = ({ endpoint, locationName }) => {
   const [input, setInput] = useState('');
@@ -49,10 +49,13 @@ const ExecuteCommand = ({ endpoint, locationName }) => {
           required
           className="terminal-input"
         />
-        <button type="submit" className="execute-btn">
+        <button type="submit" class="execute-btn">
           Execute
         </button>
       </form>
+      <button type="button" class="done">
+        실행종료
+      </button>
       {output && (
         <div>
           <h2>Output:</h2>
@@ -71,32 +74,95 @@ const ExecuteCommand = ({ endpoint, locationName }) => {
 
 const Train = () => {
   const [resourceUS, setResourceUS] = useState({
-    cpu: 50,
-    gpu: 60,
-    used_memory: 70,
+    cpu: {
+      used: 50,
+      total: 100
+    },
+    gpu: {
+      used: 60,
+      total: 120
+    },
+    memory: {
+      used: 70,
+      total: 100
+    },
     cpu_info: 'Intel Core i7~~',
     gpu_info: 'NVIDIA GeForce RTX 3080~~',
-    memory_info: 16,
-    CI: 0.8
+    CI: 0.8,
+    epoch: 1,
+    clock: 2,
+    max_clock: 3,
+    learning_time: '',
+    carbon_emission: ''
   });
   const [resourceUK, setResourceUK] = useState({
-    cpu: 40,
-    gpu: 70,
-    used_memory: 80,
+    cpu: {
+      used: 40,
+      total: 100
+    },
+    gpu: {
+      used: 70,
+      total: 120
+    },
+    memory: {
+      used: 80,
+      total: 100
+    },
     cpu_info: 'AMD Ryzen 9~~',
     gpu_info: 'NVIDIA GeForce GTX 2080~~',
-    memory_info: 32,
-    CI: 0.6
+    CI: 0.6,
+    epoch: 0,
+    clock: 2,
+    max_clock: 3,
+    learning_time: '',
+    carbon_emission: ''
   });
   const [resourceKR, setResourceKR] = useState({
-    cpu: 30,
-    gpu: 50,
-    used_memory: 60,
+    cpu: {
+      used: 30,
+      total: 100
+    },
+    gpu: {
+      used: 50,
+      total: 120
+    },
+    memory: {
+      used: 60,
+      total: 100
+    },
     cpu_info: 'Intel Core i9~~',
     gpu_info: 'AMD Radeon RX 6800~~~',
-    memory_info: 8,
-    CI: 0.7
+    CI: 0.7,
+    epoch: 1,
+    clock: 2,
+    max_clock: 4,
+    learning_time: '',
+    carbon_emission: ''
   });
+
+  // Dummy data for com-info
+  const dummyData = {
+    cpu: {
+      used: 70,
+      total: 100
+    },
+    gpu: {
+      used: 80,
+      total: 120
+    },
+    memory: {
+      used: 90,
+      total: 100
+    },
+    cpu_info: 'Intel Core i7~~',
+    gpu_info: 'NVIDIA GeForce RTX 3080~~',
+    epoch: 100,
+    clock: 2000,
+    max_clock: 2500,
+    learning_time: '2 hours',
+    carbon_emission: '100 kg',
+    CI: 0.85
+  };
 
   const fetchData = async (endpoint, setter) => {
     try {
@@ -112,21 +178,29 @@ const Train = () => {
   };
 
   useEffect(() => {
+    // Fetch data from server
     fetchData('/get_resourceUS', setResourceUS);
     fetchData('/get_resourceUK', setResourceUK);
     fetchData('/get_resourceKR', setResourceKR);
   }, []);
 
   const renderResourceTerminal = (resource, locationName) => {
-    const topData = [
-      { name: 'CPU', value: resource.cpu },
-      { name: 'GPU', value: resource.gpu },
-      { name: 'Memory', value: resource.used_memory / resource.memory_info } // 수정된 부분
+    const comInfoData = [
+      { label: 'CPU Used', value: resource.cpu.used },
+      { label: 'Memory Used', value: resource.memory.used },
+      { label: 'GPU Used', value: resource.gpu.used },
+      { label: 'Epoch', value: resource.epoch },
+      { label: 'Clock', value: resource.clock },
+      { label: 'Max Clock', value: resource.max_clock },
+      { label: 'Learning Time', value: resource.learning_time },
+      { label: 'Carbon Emission', value: resource.carbon_emission },
+      { label: 'CI', value: resource.CI }
     ];
 
-    const bottomData = [
-      { name: 'Memory Info', value: resource.memory_info },
-      { name: 'CI', value: resource.CI }
+    const topData = [
+      { name: 'CPU', value: resource.cpu.used / resource.cpu.total },
+      { name: 'GPU', value: resource.gpu.used / resource.gpu.total },
+      { name: 'Memory', value: resource.memory.used / resource.memory.total }
     ];
 
     const colors = ['#00FF00', '#FFFF00', '#FFA500', '#FF0000', '#00FFFF'];
@@ -137,9 +211,11 @@ const Train = () => {
           <span className="resource-label">resources in use ({locationName})</span>
 
           <div className="com-info">
-            <p>CPU 이름: {resource.cpu_info}</p>
-            <p>GPU 이름: {resource.gpu_info}</p>
-            <p>탄소집약도: {resource.CI}</p>
+            {comInfoData.map((data, index) => (
+              <p key={index}>
+                {data.label}: {data.value}
+              </p>
+            ))}
           </div>
 
           <div className="top-chart">
@@ -148,7 +224,10 @@ const Train = () => {
                 <div className="circular-progress" key={index}>
                   <PieChart width={200} height={200}>
                     <Pie
-                      data={[entry, { name: 'Empty', value: 100 - entry.value }]}
+                      data={[
+                        { name: entry.name, value: entry.value },
+                        { name: 'Empty', value: 1 - entry.value }
+                      ]}
                       cx="50%"
                       cy="50%"
                       startAngle={90}
@@ -162,6 +241,7 @@ const Train = () => {
                       <Cell key={`cell-${index}`} />
                       <Cell key={`cell-${index + 1}`} fill="#eee" />
                     </Pie>
+                    <Tooltip formatter={(value) => `${(value * 100).toFixed(2)}%`} />
                   </PieChart>
                   <div className="inner">
                     <span
@@ -175,9 +255,7 @@ const Train = () => {
                       className="resource-value"
                       style={{ marginLeft: index === 0 ? '34px' : index === 1 ? '35px' : '23px' }}
                     >
-                      {entry.name === 'Memory'
-                        ? `${(entry.value * 100).toFixed(2)}%`
-                        : `${entry.value}%`}
+                      {(entry.value * 100).toFixed(2)}%
                     </span>
                   </div>
                 </div>
@@ -196,6 +274,8 @@ const Train = () => {
         {renderResourceTerminal(resourceUS, 'US')}
         {renderResourceTerminal(resourceUK, 'UK')}
         {renderResourceTerminal(resourceKR, 'KR')}
+        {/* Render a dummy terminal with dummy data */}
+        {/* {renderResourceTerminal(dummyData, 'Dummy')} */}
       </div>
     </div>
   );

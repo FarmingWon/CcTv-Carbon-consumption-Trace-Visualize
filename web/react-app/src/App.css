@@ -74,6 +74,7 @@
 .map-component-box {
   text-align: left; /* 내부 요소를 왼쪽 정렬 */
   display: flex;
+  margin-left: 5rem;
 }
 
 .intensity-box {
