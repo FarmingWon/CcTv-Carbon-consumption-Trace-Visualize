@@ -1,10 +1,84 @@
 # CcTv:Carbon-consumption-Trace-Visualize
-<h2>주제 2번: 분산 클라우드에서 AI 워크로드의 탄소 인지형 이동 및 추적 시스템 개발</h2>
-<h2>예상 성과</h2>
-소프트웨어: 클라우드 환경에서 AI학습 중 발생하는 탄소배출량 시각화 및 탄소 추적<br>
-논문:  KCI<br>
-기타 : 공모전 대상 수상<br>
-<h2>필요 기술</h2>
+## 프로젝트 소개 
+<!-- 그림 추가예정 -->
+
+**CcTv(Carbon-consumption-Trace-Visualize)** 는 멀티 클라우드 환경에서 웹 기반 Carbon Management System입니다.
+- 파이썬 기반의 딥러닝 관련 라이브러리 간 Dependency 충돌을 해결 후 도커를 통해 배포합니다. 
+- React 기반으로 구현된 대시보드를 통해 딥러닝 학습이 진행되는 클라우드 프로비저닝에 대한 시각화 및 탄소 배출량 확인이 가능합니다.
+- 딥러닝 학습의 특성에 고려하여 보유중인 클라우드 중 탄소 집약도가 낮은곳으로 이동하며 학습합니다.
+## 개요 
+<!--개요 그림(동작 프레임워크 그림 그려서 넣기) -->
+
+본 프로젝트는 하나의 컴퓨팅 환경에서 여러 클라우드를 동시에 관리하며, 탄소 배출량을 고려한 딥러닝 학습을 위하여 개발하였습니다. 클라우드 환경에서 딥러닝 학습의 초기 환경 세팅을 위해 NVIDIA의 `nvidia/cuda:12.1.0-cudnn8-runtime-ubuntu22.04`를 도커 베이스로 확장하여 딥러닝에 대한 Dockerfile을 구성하였습니다.<br>
+
+## Requirements
+실험을 재현하기 위해서는 다음 환경이 필요합니다.
+- node.js version: 20.12.2
+- Python version 3.11.x
+- Flask
+- aioelectricitymaps
+- paramiko
+- firebase_admin
+
+또한 클라우드 환경에서의 테스트를 진행하기 위하여 다음 형식의 `ssh_data.csv`파일이 필요합니다. <br><br>
+***ssh접속 예시***
+```bash
+$ ssh -p {Port} {사용자 이름}@{SSH 서버의 IP 주소}
+```
+|SSH 서버의 IP 주소|사용자 이름|Password|Port|국가코드|국가명|
+|-----------------|----------|--------|----|------|---|
+|x.x.x.x|cctv|1234|10002|KR|Korea|
+
+
+## Usage
+본 레포지토리를 통해 실험을 진행하기 위해서는 클라우드 환경에서 도커가 사전에 설치되어 있어야 합니다. 다음 단계에 따라 프로젝트를 실행할 수 있습니다: <br>
+### 1. 프로젝트 Clone 및 환경 설정
+먼저, 우리의 레포지토리를 Clone하고 필요한 패키지를 설치합니다.
+```bash
+$ git clone https://github.com/YourUsername/CcTv.git
+$ cd CcTv
+$ pip install -r requirements.txt
+$ cd web/react-app
+$ npm install
+```
+### 2. Flask 및 npm 서버 구동
+Flask와 npm 서버를 각각 구동시킵니다.
+```bash
+$ cd web/flask-app
+$ python app.py
+$ cd web/react-app
+$ npm start
+```
+### 3. 도커 컨테이너에서 딥러닝 학습 시작
+원하는 클라우드의 터미널에서 딥러닝 학습을 시작합니다. 예를 들어, VGGNet 모델을 학습시키려면 다음 명령어를 사용합니다:
+```bash
+$ docker run -it --gpus all python3 VGGNet/train.py --epoch 100 --lr 0.001 --batch 8 --vgg_model VGG16 --cuda 0 --step_size 30 --gamma 0.1 --resumption 0 --ssh_server 0 --threshold 250 
+```
+여기서 각 옵션의 의미는 다음과 같습니다.
+- epoch : 학습할 에폭의 수
+- lr : 학습률
+- batch : 배치 크기
+- vgg_modl : 사용할 VGGNet 모델
+- cuda : 사용할 GPU 번호
+- step_size : 학습률을 감소시키는 스텝 크기
+- gamma : 학습률 감소 계수
+- resumption : 마이그레이션 여부
+- ssh_server : SSH 서버 번호
+- threshold : 탄소 배출량 임계값
+각 옵션은 딥러닝 모델에 적용하여 변경할 수 있습니다. 
+### 4. 대시보드를 통해 진행 상황 모니터링
+딥러닝 학습이 시작되면, 대시보드에서 클라우드 프로비저닝과 학습의 진행 현황을 확인할 수 있습니다. 대시보드는 실시간으로 데이터 시각화 및 탄소 배출량을 모니터링 할 수 있도록 설계되었습니다.
+
+### 5. 결과 확인 및 추가 분석
+학습이 완료되면, 대시보드를 통해 최종 결과와 탄소 배출량에 대한 자세한 분석을 확인할 수 있습니다. 결과 데이터를 추출하여 추가 분석을 진행하거나 보고서를 작성할 수 있습니다.
+<br>
+이와 같이 단계를 따라 진행하면, CcTv 프로젝트를 통해 클라우드 환경에서의 딥러닝 학습을 효과적으로 관리하고 탄소 배출량을 추적할 수 있습니다.
+
+## Contributors
+The content is by [Wonseok Son][FarmingWon]. 
+
+FOr a full list of a all contributors, check the [contributor's page][contributors].
+<!-- <h2>필요 기술</h2>
 - 대시보드 구현을 위한 Front-end Framework 및 Library 심화 지식(e.g. React, Django, etc..)<br>
 - 협업 툴(GitHub Actions)<br> 
 - Linux 스크립트 작성 기술<br> 
@@ -26,4 +100,30 @@
 [5] IPCC. Global Warming of 1.5°C. An IPCC Special Report on the impacts of global warming of 1.5°C above pre-industrial levels and related global greenhouse gas emission pathways, in the context of strengthening the global response to the threat of climate change,. Technical report, 2018.<br>
 [6] K. Martineau, “Shrinking deep learning’s carꠓbon footprint,” [Online]. Available: https://news.mit.edu/2020/shrinking-deep-learning-carbon-footprint-0807<br>
 [7] G. Cloud, [Online]. Available: https://cloud.google.com/compute/docs/regions-zones?hl=ko<br>
-[8] G. S. Practitioner, [Online]. Available: https://learn.greensoftware.foundation/carbon-awareness/
+[8] G. S. Practitioner, [Online]. Available: https://learn.greensoftware.foundation/carbon-awareness/ -->
+## License
+
+MIT License
+
+Copyright (c) 2023 Jan-Philipp Benecke
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+[FarmingWon]: https://github.com/FarmingWon
+[contributors]: https://github.com/FarmingWon/CcTv-Carbon-consumption-Trace-Visualize/graphs/contributors
