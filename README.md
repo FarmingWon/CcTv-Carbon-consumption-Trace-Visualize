@@ -1,6 +1,10 @@
 # CcTv:Carbon-consumption-Trace-Visualize
 ## 프로젝트 소개 
 <!-- 그림 추가예정 -->
+<p align="center">
+  <img src="https://github.com/FarmingWon/CcTv-Carbon-consumption-Trace-Visualize/assets/98411696/8d6a62f5-895d-4e5f-9c93-e4a7025b9f91"><br>
+  <strong>Fig 1. CcTV DashBoard</strong>
+</p>
 
 **CcTv(Carbon-consumption-Trace-Visualize)** 는 멀티 클라우드 환경에서 웹 기반 Carbon Management System입니다.
 - 파이썬 기반의 딥러닝 관련 라이브러리 간 Dependency 충돌을 해결 후 도커를 통해 배포합니다. 
@@ -51,6 +55,11 @@ $ cd web/react-app
 $ npm start
 ```
 ### 3. 도커 컨테이너에서 딥러닝 학습 시작
+<p align="center">
+  <img src="https://github.com/FarmingWon/CcTv-Carbon-consumption-Trace-Visualize/assets/98411696/aa0e3fde-00fe-437f-ba9d-a94139694bd5"><br>
+  <strong>Fig 2. Terminal on Dashboard</strong>
+</p>
+
 원하는 클라우드의 터미널에서 딥러닝 학습을 시작합니다. 예를 들어, VGGNet 모델을 학습시키려면 다음 명령어를 사용합니다:
 ```bash
 $ docker run -it --gpus all python3 VGGNet/train.py --epoch 100 --lr 0.001 --batch 8 --vgg_model VGG16 --cuda 0 --step_size 30 --gamma 0.1 --resumption 0 --ssh_server 0 --threshold 250 
@@ -68,6 +77,17 @@ $ docker run -it --gpus all python3 VGGNet/train.py --epoch 100 --lr 0.001 --bat
 - ``--threshold`` : 탄소 배출량 임계값
 각 옵션은 딥러닝 모델에 적용하여 변경할 수 있습니다. 
 ### 4. 대시보드를 통해 진행 상황 모니터링
+<p align="center">
+  <img src="https://github.com/FarmingWon/CcTv-Carbon-consumption-Trace-Visualize/assets/98411696/e235d217-f217-47cb-9b44-72057d95d5d7"><br>
+  <strong>Fig 3. Carbon Intensity Chart</strong>
+</p>
+
+<p align="center">
+  <img src="https://github.com/FarmingWon/CcTv-Carbon-consumption-Trace-Visualize/assets/98411696/0d3f9dc9-9197-46df-b876-17a8429f3b98"><br>
+  <strong>Fig 4. Cloud Resource Info.</strong>
+</p>
+
+
 딥러닝 학습이 시작되면, 대시보드에서 클라우드 프로비저닝과 학습의 진행 현황을 확인할 수 있습니다. 대시보드는 실시간으로 데이터 시각화 및 탄소 배출량을 모니터링 할 수 있도록 설계되었습니다.
 
 ### 5. 결과 확인 및 추가 분석
