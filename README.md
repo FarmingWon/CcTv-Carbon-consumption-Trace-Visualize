@@ -55,16 +55,16 @@ $ npm start
 $ docker run -it --gpus all python3 VGGNet/train.py --epoch 100 --lr 0.001 --batch 8 --vgg_model VGG16 --cuda 0 --step_size 30 --gamma 0.1 --resumption 0 --ssh_server 0 --threshold 250 
 ```
 여기서 각 옵션의 의미는 다음과 같습니다.
-- epoch : 학습할 에폭의 수
-- lr : 학습률
-- batch : 배치 크기
-- vgg_modl : 사용할 VGGNet 모델
-- cuda : 사용할 GPU 번호
-- step_size : 학습률을 감소시키는 스텝 크기
-- gamma : 학습률 감소 계수
-- resumption : 마이그레이션 여부
-- ssh_server : SSH 서버 번호
-- threshold : 탄소 배출량 임계값
+- ```--epoch``` : 학습할 에폭의 수
+- ``--lr`` : 학습률
+- ``--batch`` : 배치 크기
+- ``--vgg_modl`` : 사용할 VGGNet 모델
+- ``--cuda`` : 사용할 GPU 번호
+- ``--step_size`` : 학습률을 감소시키는 스텝 크기
+- ``--gamma`` : 학습률 감소 계수
+- ``--resumption`` : 마이그레이션 여부
+- ``--ssh_server`` : SSH 서버 번호
+- ``--threshold`` : 탄소 배출량 임계값
 각 옵션은 딥러닝 모델에 적용하여 변경할 수 있습니다. 
 ### 4. 대시보드를 통해 진행 상황 모니터링
 딥러닝 학습이 시작되면, 대시보드에서 클라우드 프로비저닝과 학습의 진행 현황을 확인할 수 있습니다. 대시보드는 실시간으로 데이터 시각화 및 탄소 배출량을 모니터링 할 수 있도록 설계되었습니다.
