@@ -132,7 +132,8 @@ For a full list of a all contributors, check the [contributor's page][contributo
 [5] IPCC. Global Warming of 1.5°C. An IPCC Special Report on the impacts of global warming of 1.5°C above pre-industrial levels and related global greenhouse gas emission pathways, in the context of strengthening the global response to the threat of climate change,. Technical report, 2018.<br>
 [6] K. Martineau, “Shrinking deep learning’s carꠓbon footprint,” [Online]. Available: https://news.mit.edu/2020/shrinking-deep-learning-carbon-footprint-0807<br>
 [7] G. Cloud, [Online]. Available: https://cloud.google.com/compute/docs/regions-zones?hl=ko<br>
-[8] G. S. Practitioner, [Online]. Available: https://learn.greensoftware.foundation/carbon-awareness/ -->
+[8] G. S. Practitioner, [Online]. Available: https://learn.greensoftware.foundation/carbon-awareness/ 
+[9] Park, Jeonghyeon, Daero Kim, Jiseon Kim, Jungkyu Han, and Sejin Chun. "Carbon-Aware and Fault-Tolerant Migration of Deep Learning Workloads in the Geo-distributed Cloud." IEEE International Conference on Cloud Computing (CLOUD), 2024. -->
 ---
 ## License
 
