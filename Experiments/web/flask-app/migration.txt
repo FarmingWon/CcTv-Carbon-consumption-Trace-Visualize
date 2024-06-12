@@ -1,0 +1,6 @@
+1. 탄소 up 
+2. endpoint 'is_train'에서 fb.get_data()로 파일 읽기 # migration file
+3. migration 파트 
+    3.1 migration이 true일 경우 migration 시작
+    3.2 migration이 false일 경우 학습 정보에 관한 것 return
+4. migration이 true일때 migration이라는 정보를 저장. 
