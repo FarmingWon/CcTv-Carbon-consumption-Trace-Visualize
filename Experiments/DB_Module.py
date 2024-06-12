@@ -1,6 +1,7 @@
 from __init__ import *
 from utils import Timer
 from ast import literal_eval
+import json
 
 class FireBase:
     def __init__(self, model, name):
@@ -69,13 +70,16 @@ class FireBase:
             blob.upload_from_string(resources, content_type='application/json')
             print(f"File uploaded to {self.resource_path} Failed")
         
-    @Timer.timer
-    def download_current_resource(self):
-        bucket = storage.bucket(app=self.firebase_app)  # Make sure to pass the initialized app
-        blob = bucket.blob(self.resource_path)
-        blob.download_to_filename(self.resource_file_path)
-        print(f"File downloaded to {self.resource_file_path}")
-    
+    def get_resource(self):
+        try:
+            bucket = storage.bucket(app=self.firebase_app)  # Make sure to pass the initialized app
+            blob = bucket.blob(self.resource_path)
+            resources = blob.download_as_string()
+            resources = json.loads(resources.decode('utf-8'))
+            return resources
+        except:
+            return None
+        
     def get_resource_path(self):
         return self.resource_file_path
     
@@ -99,11 +103,12 @@ class FireBase:
         blob.upload_from_string(resources, content_type='application/json')
         print(f"File Uploade to {self.parser_file_path}")
     
-    def download_parser(self):
+    def get_parser(self):
         bucket = storage.bucket(app=self.firebase_app)  # Make sure to pass the initialized app
         blob = bucket.blob(self.parser_file_path)
-        blob.download_to_filename(self.parser_dest_file_path)
-        print(f"File downloaded to {self.parser_dest_file_path}")
+        parser = blob.download_as_string()
+        parser = json.loads(parser.decode('utf-8'))
+        return parser 
     
     def get_data(self):
         bucket = storage.bucket(app=self.firebase_app)
@@ -116,8 +121,9 @@ class FireBase:
 if __name__ == "__main__":
     model = "VGGNet"
     fb = FireBase(model, "Zz")
-    di = {'epoch': '100', 'lr': '0.001', 'batch': '8', 'vgg_model': 'VGG16', 'cuda': '0', 'step_size': '30', 'gamma': '0.1', 'resumption': '0', 'ssh_server': '0', 'threshold': '250'}
-    print(fb.get_data())
+    print(fb.get_parser())
+    # di = {'epoch': '100', 'lr': '0.001', 'batch': '8', 'vgg_model': 'VGG16', 'cuda': '0', 'step_size': '30', 'gamma': '0.1', 'resumption': '0', 'ssh_server': '0', 'threshold': '250'}
+    # print(fb.get_parser())
     # fb.upload_parser(di)
     # fb.download_parser()
     # fb.upload_current_resource(1,2,3,4,5,6,7,8,9,0,0)

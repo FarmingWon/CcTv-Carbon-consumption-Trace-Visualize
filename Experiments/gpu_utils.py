@@ -37,9 +37,7 @@ class GPUs:
         else:
             try:
                 self.download_checkpoint()
-                self.download_resource()
-                with open(self.resource_file_path, 'r') as f:
-                    json_data = json.load(f)
+                json_data = self.get_resource()
                 self.learned_time = json_data['learning_time']
                 self.carbon_emissions.append(json_data['carbon_emission'])
                 self.used_gpu.append(json_data['total_gpu'])
@@ -73,15 +71,16 @@ class GPUs:
         
     def get_gpu_freq_info(self):
         try:
-            # Getting GPU info by sudo nvidia-smi query
-            command = f"nvidia-smi --id {self.gpu_id} --query-gpu=clocks.current.memory,clocks.current.graphics --format=csv,noheader,nounits"
+            command = f"nvidia-smi --query-gpu=utilization.gpu --format=csv,noheader,nounits"
             result = subprocess.check_output(command, shell=True, universal_newlines=True)
+            # Getting GPU info by sudo nvidia-smi query
+            # command = f"nvidia-smi --id {self.gpu_id} --query-gpu=clocks.current.memory,clocks.current.graphics --format=csv,noheader,nounits"
+            # result = subprocess.check_output(command, shell=True, universal_newlines=True)
 
-            # 결과 파싱
-            lines = result.strip().split('\n')
-            memory_clock, core_clock = map(int, lines[0].strip().split(','))
-
-            return core_clock, 2475
+            # # 결과 파싱
+            # lines = result.strip().split('\n')
+            # memory_clock, core_clock = map(int, lines[0].strip().split(','))
+            return float(result), 2475
     
         except Exception as e:
             print("Error:", e)
@@ -134,8 +133,8 @@ class GPUs:
         clock, max_clock = self.get_gpu_freq_info()
         epoch = self.epoch
         learning_time = time.time() - self.learning_time
-        use_gpu = float(gpus / (60.0 * 12.0)) if gpus != 0.0 else 0.0 # 5초마다
-        self.used_gpu.append(use_gpu)
+        use_gpu = float(gpus) if gpus != 0.0 else 0.0 # 5초마다
+        self.used_gpu.append((use_gpu / (60.0 * 12.0)))
         emission = self.calculate_carbons_emission(use_gpu)
         self.carbon_emissions.append(emission)
         self._fb.upload_current_resource(round(cpus, 2), round(memorys, 2), round(total_memorys, 2), gpus, sum(self.used_gpu), epoch, clock, max_clock, learning_time+self.learned_time, sum(self.carbon_emissions), self._carbons)
@@ -144,8 +143,8 @@ class GPUs:
     def download_checkpoint(self):
         self._fb.download_from_firebase()
     
-    def download_resource(self):
-        self._fb.download_current_resource()
+    def get_resource(self):
+        return self._fb.get_resource()
     
     def upload_checkpoint(self):
         self._fb.upload_to_firebase()
@@ -153,7 +152,8 @@ class GPUs:
     def calculate_carbons_emission(self, used_gpus):
         if self._carbons != None:
             # Carbons Emissions = Carbons Intensity * Electricity / 5s 기준 계싼 
-            carbon_emission = self._cal_carbon * used_gpus
+            # Carbon Emissions(gCO2eq) = Carbon Intensity(gCO2eq/kWh) * used_gpu(kWh) ==> usedGPU is Wh. used_gpu(kWh) = used(Wh) * (1 / 1000.0)
+            carbon_emission = (self._cal_carbon * used_gpus) / (60.0 * 12.0)
             return carbon_emission
         else:
             return 0.0
@@ -169,7 +169,7 @@ class GPUs:
     
     def update_carbon(self):
         self._carbons = asyncio.run(self._elec.get_carbon_intensity(self._region)) # 5s 간격
-        self._cal_carbon = self._cal_carbon / (60.0 * 12.0)
+        self._cal_carbon = self._cal_carbon
         
     def can_learning(self):
         self.update_carbon()
@@ -182,10 +182,11 @@ class GPUs:
         self._fb.upload_migration(is_migration, False, self.is_learning, self._region ,self._region_full)
     
     @staticmethod
-    def download_parser(model):
+    def get_parser(model):
         _fb = FireBase(model, "down")
-        _fb.download_parser()
+        parser = _fb.get_parser()
         del _fb
+        return parser
 
 if __name__ == "__main__":
     gpus = GPUs(gpu_id="0", model="VGGNet", resumption=1, ssh_server=1, threshold=250)
