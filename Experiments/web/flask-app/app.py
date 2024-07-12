@@ -408,3 +408,15 @@ if __name__ == '__main__':
     # parser_save("docker run -it --gpus all --name US-CAL-BANC  python3 VGGNet/train.py --epoch 100 --lr 0.001 --batch 8 --vgg_model VGG16 --cuda 0 --step_size 30 --gamma 0.1 --resumption 0 --ssh_server 0 --threshold 1000", "KR")
     app.run(debug=True, port=5000)
     # print(get_resource5())
+
+
+# 0711 추가 코드. csv파싱
+@app.route('/api/csvdata', methods=['GET'])
+def get_csv_data():
+    try:
+        csv_path = os.path.join(os.getcwd(), 'serverInfo.csv')
+        df = pd.read_csv(csv_path, header=None)
+        csv_data = df.to_dict(orient='records')
+        return jsonify({'csvData': csv_data})
+    except Exception as e:
+        return jsonify({'error': str(e)})
