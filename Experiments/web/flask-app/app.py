@@ -410,13 +410,4 @@ if __name__ == '__main__':
     # print(get_resource5())
 
 
-# 0711 추가 코드. csv파싱
-@app.route('/api/csvdata', methods=['GET'])
-def get_csv_data():
-    try:
-        csv_path = os.path.join(os.getcwd(), 'serverInfo.csv')
-        df = pd.read_csv(csv_path, header=None)
-        csv_data = df.to_dict(orient='records')
-        return jsonify({'csvData': csv_data})
-    except Exception as e:
-        return jsonify({'error': str(e)})
+

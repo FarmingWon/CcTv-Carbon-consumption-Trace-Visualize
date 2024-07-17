@@ -5,29 +5,61 @@ import * as yup from 'yup';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { useNavigate } from 'react-router-dom';
 import Header from '../../components/Header';
-import axios from 'axios';
 
 const Form = ({ onLogin }) => {
   const isNonMobile = useMediaQuery('(min-width:600px)');
   const navigate = useNavigate();
   const [csvData, setCsvData] = React.useState(null);
-  const [fetchError, setFetchError] = React.useState(false); // 서버 연동 에러 상태 추가
+  const [fetchError, setFetchError] = React.useState(false);
+  const [csvError, setCsvError] = React.useState(false);
 
   const handleFormSubmit = (values) => {
-    // 로그인 성공 시 onLogin 콜백 호출
+    if (!csvData) {
+      setCsvError(true);
+      return;
+    }
     onLogin();
     navigate('/');
   };
 
-  const handleLoadCSV = async () => {
-    try {
-      const response = await axios.get('http://localhost:5000/api/csvdata');
-      setCsvData(response.data.csvData);
-      setFetchError(false); // 성공 시 에러 상태 초기화
-    } catch (error) {
-      console.error('Error fetching CSV data:', error);
-      setFetchError(true); // 실패 시 에러 상태 설정
+  const handleFileUpload = (event) => {
+    const file = event.target.files[0];
+    const reader = new FileReader();
+
+    reader.onload = (e) => {
+      const csvText = e.target.result;
+      try {
+        const parsedData = parseCSV(csvText);
+        setCsvData(parsedData);
+        setFetchError(false);
+        setCsvError(false);
+      } catch (error) {
+        console.error('Error parsing CSV file:', error);
+        setFetchError(true);
+      }
+    };
+
+    reader.onerror = () => {
+      console.error('Error reading CSV file');
+      setFetchError(true);
+    };
+
+    if (file) {
+      reader.readAsText(file);
     }
+  };
+
+  const parseCSV = (text) => {
+    const lines = text.split('\n');
+    const headers = lines[0].split(',');
+    const data = lines.slice(1).map((line) => {
+      const values = line.split(',');
+      return headers.reduce((obj, header, index) => {
+        obj[header] = values[index];
+        return obj;
+      }, {});
+    });
+    return data;
   };
 
   const loginSchema = yup.object().shape({
@@ -85,6 +117,11 @@ const Form = ({ onLogin }) => {
                 sx={{ gridColumn: 'span 4' }}
               />
             </Box>
+            {csvError && (
+              <Box mt={2} color="error.main">
+                CSV 파일을 업로드해주세요.
+              </Box>
+            )}
             <Box display="flex" justifyContent="end" mt="20px">
               <Button type="submit" color="secondary" variant="contained">
                 Sign In
@@ -93,19 +130,27 @@ const Form = ({ onLogin }) => {
           </form>
         )}
       </Formik>
-      <Button
-        type="button"
-        color="secondary"
-        variant="contained"
-        onClick={handleLoadCSV}
-        style={{ marginTop: '30px' }}
-      >
-        Load CSV
-      </Button>
-      {fetchError && ( // fetchError 상태에 따라 실패 메시지 표시
+      <input
+        type="file"
+        accept=".csv"
+        onChange={handleFileUpload}
+        style={{ display: 'none' }}
+        id="csv-input"
+      />
+      <label htmlFor="csv-input">
+        <Button
+          color="secondary"
+          variant="contained"
+          component="span"
+          style={{ marginTop: '30px' }}
+        >
+          Input CSV
+        </Button>
+      </label>
+      {fetchError && (
         <Box mt={3}>
-          <h2>Failed to fetch CSV data from server.</h2>
-          <p>Please check your network connection and try again.</p>
+          <h2>Failed to parse CSV data.</h2>
+          <p>Please check the file format and try again.</p>
         </Box>
       )}
       {csvData && !fetchError && (
